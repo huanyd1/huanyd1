@@ -16,7 +16,7 @@
 hi, i'm Huân, a passionate self-taught C# developer and a freelance software engineer from VietNam. my passion for software lies with dreaming up ideas and making them come true . I take great care in the experience, architecture, and code quality of the things I build.
 
 
-  <img align="right" alt="GIF" src="https://github.com/huanyd1/huanyd1/blob/master/code.gif" width="500" height="320" />
+  <img align="right" alt="GIF" src="https://static.ybox.vn/2018/2/26/1e97a24e-1adc-11e8-9758-2e995a9a3302.gif" width="500" height="320" />
   
 - 💬 Ask me about anything, i am happy to help;
 
