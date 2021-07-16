@@ -33,12 +33,12 @@ hi, i'm Huân, a passionate self-taught C# developer and a freelance software en
 ```text
 C#           13 hrs 15 mins  ███████████████████░░░░░░   76.32 % 
 Python       1 hr 40 mins    ██▒░░░░░░░░░░░░░░░░░░░░░░   09.68 % 
-Other        52 mins         █▒░░░░░░░░░░░░░░░░░░░░░░░   05.00 % 
-MDX          39 mins         █░░░░░░░░░░░░░░░░░░░░░░░░   03.80 % 
+C            52 mins         █▒░░░░░░░░░░░░░░░░░░░░░░░   05.00 % 
+Other        39 mins         █░░░░░░░░░░░░░░░░░░░░░░░░   03.80 % 
 Markdown     17 mins         ▒░░░░░░░░░░░░░░░░░░░░░░░░   01.68 % 
 ```
 <!--END_SECTION:waka-->
 
 📈 my github stats
 
-<p align="center"> <img src="https://github-readme-stats.vercel.app/api?username=huanyd1&show_icons=true&theme=gotham" alt="huanyd1" />
+<p align="center"> <img src="https://github-readme-stats.vercel.app/api?username=huanyd1&show_icons=true&theme=light" alt="huanyd1" />
