@@ -39,6 +39,9 @@ Markdown     17 mins         ▒░░░░░░░░░░░░░░░░
 ```
 <!--END_SECTION:waka-->
 
+[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=huanyd1&langs_count=8)](https://github.com/anuraghazra/github-readme-stats)
+
+
 📈 my github stats
 
-<p align="center"> <img src="https://github-readme-stats.vercel.app/api?username=huanyd1&show_icons=true&theme=light" alt="huanyd1" />
+<p align="center"> <img src="https://github-readme-stats.vercel.app/api?username=huanyd1&show_icons=true&theme=radical" alt="huanyd1" />
