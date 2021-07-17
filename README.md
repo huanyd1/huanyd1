@@ -1,4 +1,4 @@
-### hello there <img src="https://media.giphy.com/media/hvRJCLFzcasrR4ia7z/giphy.gif" width="25px">
+### Hello there <img src="https://media.giphy.com/media/hvRJCLFzcasrR4ia7z/giphy.gif" width="25px">
 <a href="https://www.facebook.com/dohuanyd1/">
   <img align="left" alt="Huan's Facebook" width="22px" src="https://image.flaticon.com/icons/png/512/2504/2504903.png" />
 </a>
@@ -13,14 +13,14 @@
 
 <br />
 
-hi, i'm Huân, a passionate self-taught C# developer and a freelance software engineer from VietNam. my passion for software lies with dreaming up ideas and making them come true . I take great care in the experience, architecture, and code quality of the things I build.
+Hi, i'm Huân, a passionate self-taught C# developer and a freelance software engineer from VietNam. my passion for software lies with dreaming up ideas and making them come true . I take great care in the experience, architecture, and code quality of the things I build.
 
 
   <img align="right" alt="GIF" src="https://static.ybox.vn/2018/2/26/1e97a24e-1adc-11e8-9758-2e995a9a3302.gif" width="480" height="280" />
   
 - 💬 Ask me about anything, i am happy to help;
 
-**languages and tools:**  
+**Languages and tools:**  
 
 <code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/c/c.png"></code>
 <code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/csharp/csharp.png"></code>
