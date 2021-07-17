@@ -16,6 +16,8 @@
 Hi, i'm Huân, a passionate self-taught C# developer and a freelance software engineer from VietNam. my passion for software lies with dreaming up ideas and making them come true . I take great care in the experience, architecture, and code quality of the things I build.
   
 - 💬 Ask me about anything, I am happy to help;
+- 💬 Most of project i will get it private;
+
 
 **Languages and tools:**  
 
