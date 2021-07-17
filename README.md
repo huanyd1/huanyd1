@@ -15,22 +15,23 @@
 
 Hi, i'm Huân, a passionate self-taught C# developer and a freelance software engineer from VietNam. my passion for software lies with dreaming up ideas and making them come true . I take great care in the experience, architecture, and code quality of the things I build.
   
-- 💬 Ask me about anything, i am happy to help;
+- 💬 Ask me about anything, I am happy to help;
 
 **Languages and tools:**  
 
-<code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/c/c.png"></code>
 <code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/csharp/csharp.png"></code>
+<code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/php/php.png"></code>
 <code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/python/python.png"></code>
 <code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/sql/sql.png"></code>
 <code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/git/git.png"></code>
-
+<code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/javascript/javascript.png"></code>
+<code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/css/css.png"></code>
 
 <img align="right" alt="GIF" src="https://static.ybox.vn/2018/2/26/1e97a24e-1adc-11e8-9758-2e995a9a3302.gif" width="480" height="280"/>
 
 [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=huanyd1&langs_count=8)](https://github.com/anuraghazra/github-readme-stats)
 
 
-📈 my github stats
+📈 My github stats
 
 <p align="center"> <img src="https://github-readme-stats.vercel.app/api?username=huanyd1&show_icons=true&theme=radical" alt="huanyd1" />
