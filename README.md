@@ -28,17 +28,6 @@ hi, i'm Huân, a passionate self-taught C# developer and a freelance software en
 <code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/sql/sql.png"></code>
 <code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/git/git.png"></code>
 
-📊 **this week i spent my time on:**
-<!--START_SECTION:waka-->
-```text
-C#           13 hrs 15 mins  ███████████████████░░░░░░   76.32 % 
-Python       1 hr 40 mins    ██▒░░░░░░░░░░░░░░░░░░░░░░   09.68 % 
-C            52 mins         █▒░░░░░░░░░░░░░░░░░░░░░░░   05.00 % 
-Other        39 mins         █░░░░░░░░░░░░░░░░░░░░░░░░   03.80 % 
-Markdown     17 mins         ▒░░░░░░░░░░░░░░░░░░░░░░░░   01.68 % 
-```
-<!--END_SECTION:waka-->
-
 [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=huanyd1&langs_count=8)](https://github.com/anuraghazra/github-readme-stats)
 
 
