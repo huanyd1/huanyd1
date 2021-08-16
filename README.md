@@ -36,4 +36,4 @@ Hi, i'm Huân, a passionate self-taught C# developer and a freelance software en
 
 📈 My github stats
 
-<p align="center"> <img src="https://github-readme-stats.vercel.app/api?username=huanyd1&show_icons=true&theme=dracula" alt="huanyd1" />
+<p align="center"> <img src="https://github-readme-stats.vercel.app/api?username=huanyd1&show_icons=true&theme=midnight-purple" alt="huanyd1" />
