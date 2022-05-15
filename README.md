@@ -6,7 +6,7 @@
   <img align="left" alt="Huan's Instargram" width="22px" src="https://cdn-icons-png.flaticon.com/512/1409/1409946.png" />
 </a>
 <a href="https://www.pinterest.com/huanyd1/">
-  <img align="left" alt="Huan's Pinterest" width="22px" src="https://cdn-icons.flaticon.com/png/512/1377/premium/1377257.png" />
+  <img align="left" alt="Huan's Pinterest" width="22px" src="https://cdn-icons.flaticon.com/png/512/1377/premium/1377257.png?token=exp=1652596414~hmac=1c2926b6681809fe35b76508200bc85f" />
 </a>
 
 ![](https://visitor-badge.glitch.me/badge?page_id=huanyd1.huanyd1)
