@@ -1,4 +1,4 @@
-### Hello there <img src="https://media.giphy.com/media/hvRJCLFzcasrR4ia7z/giphy.gif" width="15px">
+### Hello there
 <a href="https://www.facebook.com/dohuanyd1/">
   <img align="left" alt="Huan's Facebook" width="22px" src="https://cdn-icons.flaticon.com/png/128/2504/premium/2504903.png?token=exp=1652596315~hmac=ad0236ed14ba17d843181f4dbc9e0da6" />
 </a>
