@@ -1,12 +1,12 @@
 ### Hello there
 <a href="https://www.facebook.com/dohuanyd1/">
-  <img align="left" alt="Huan's Facebook" width="22px" src="https://cdn-icons.flaticon.com/png/128/2504/premium/2504903.png?token=exp=1652596315~hmac=ad0236ed14ba17d843181f4dbc9e0da6" />
+  <img align="left" alt="Huan's Facebook" width="22px" src="https://cdn-icons-png.flaticon.com/512/733/733547.png" />
 </a>
 <a href="https://www.instagram.com/dohuan0905/">
   <img align="left" alt="Huan's Instargram" width="22px" src="https://cdn-icons-png.flaticon.com/512/1409/1409946.png" />
 </a>
 <a href="https://www.pinterest.com/huanyd1/">
-  <img align="left" alt="Huan's Pinterest" width="22px" src="https://cdn-icons.flaticon.com/png/512/1377/premium/1377257.png?token=exp=1652596414~hmac=1c2926b6681809fe35b76508200bc85f" />
+  <img align="left" alt="Huan's Pinterest" width="22px" src="https://cdn-icons-png.flaticon.com/512/145/145808.png" />
 </a>
 
 ![](https://visitor-badge.glitch.me/badge?page_id=huanyd1.huanyd1)
