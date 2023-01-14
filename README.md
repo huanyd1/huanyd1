@@ -32,7 +32,7 @@ Hi, i'm Huân, a passionate self-taught C# developer and a freelance software en
 
 <img align="right" alt="GIF" src="https://static.ybox.vn/2018/2/26/1e97a24e-1adc-11e8-9758-2e995a9a3302.gif" width="480" height="280"/>
 
-[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=huanyd1&langs_count=8)](https://github.com/anuraghazra/github-readme-stats)
+<!-- [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=huanyd1&langs_count=8)](https://github.com/anuraghazra/github-readme-stats) -->
 
 
 📈 My github stats
