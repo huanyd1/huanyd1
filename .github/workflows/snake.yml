@@ -2,7 +2,7 @@ name: Generate Snake
 
 on:
   schedule:
-    - cron: "0 */6 * * *"   # chạy mỗi 6 tiếng, khớp với github-stats.yml
+    - cron: "0 */6 * * *"   
   push:
     branches: [main]
   workflow_dispatch: {}
