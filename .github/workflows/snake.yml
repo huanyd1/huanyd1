@@ -13,16 +13,11 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Generate snake.svg
-        uses: Platane/snk@v3
-        id: snake-gif
-        with:
-          github_user_name: huanyd1
-          outputs: |
-            assets/snake.svg?color_snake=#38bdf8&color_dots=#1e293b,#0e4429,#006d32,#26a641,#39d353
-
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
+        with:
+          clean: false   # tránh checkout cố xoá file cũ trong workspace và dính EACCES
+                          # nếu file đó từng bị ghi bởi container Docker chạy quyền root
 
       - name: Generate snake.svg
         uses: Platane/snk@v3
@@ -30,6 +25,12 @@ jobs:
           github_user_name: huanyd1
           outputs: |
             assets/snake.svg?color_snake=#38bdf8&color_dots=#1e293b,#0e4429,#006d32,#26a641,#39d353
+
+      - name: Trả lại quyền sở hữu cho runner user
+        # Platane/snk chạy trong Docker container, container có thể ghi file
+        # bằng quyền root -> cần chown lại trước khi git add/commit, và để
+        # lần chạy sau checkout không gặp lại lỗi EACCES tương tự
+        run: sudo chown -R $(id -u):$(id -g) assets/
 
       - name: Commit nếu có thay đổi
         run: |
