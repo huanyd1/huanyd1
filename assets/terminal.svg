@@ -61,7 +61,7 @@
 
 <!-- Terminal window (fades in at t=1s) -->
 <g>
-  <rect x="80" y="60" width="1040" height="460" rx="15"
+  <rect x="80" y="60" width="1040" height="480" rx="15"
         fill="#0f172a" stroke="#334155" stroke-width="3"/>
 
   <circle cx="120" cy="100" r="10" fill="#ef4444"/>
@@ -194,19 +194,19 @@
   <rect x="120" y="395" width="95" height="34" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
   <text x="135" y="418" fill="#38bdf8">Angular</text>
 
-  <rect x="222" y="395" width="150" height="34" rx="8" fill="#1e293b" stroke="#a855f7" stroke-width="1.5"/>
+  <rect x="225" y="395" width="150" height="34" rx="8" fill="#1e293b" stroke="#a855f7" stroke-width="1.5"/>
   <text x="237" y="418" fill="#a855f7">ASP.NET Core</text>
 
   <rect x="384" y="395" width="115" height="34" rx="8" fill="#1e293b" stroke="#4ade80" stroke-width="1.5"/>
-  <text x="379" y="418" fill="#4ade80">SQL Server</text>
+  <text x="390" y="418" fill="#4ade80">SQL Server</text>
 
-  <rect x="510" y="395" width="60" height="34" rx="8" fill="#1e293b" stroke="#eab308" stroke-width="1.5"/>
-  <text x="506" y="418" fill="#eab308">C#</text>
+  <rect x="508" y="395" width="60" height="34" rx="8" fill="#1e293b" stroke="#eab308" stroke-width="1.5"/>
+  <text x="525" y="418" fill="#eab308">C#</text>
 
-  <rect x="563" y="395" width="155" height="34" rx="8" fill="#1e293b" stroke="#f472b6" stroke-width="1.5"/>
-  <text x="578" y="418" fill="#f472b6">VNPAY / VBAN</text>
+  <rect x="576" y="395" width="155" height="34" rx="8" fill="#1e293b" stroke="#f472b6" stroke-width="1.5"/>
+  <text x="588" y="418" fill="#f472b6">VNPAY / VBAN</text>
 
-  <rect x="730" y="395" width="90" height="34" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+  <rect x="736" y="395" width="80" height="34" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
   <text x="745" y="418" fill="#38bdf8">Docker</text>
 </g>
 
