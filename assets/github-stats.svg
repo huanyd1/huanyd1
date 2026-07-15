@@ -17,7 +17,7 @@
   <rect width="1200" height="420" rx="20" fill="url(#bgGlow2)"/>
 
   <text x="60" y="50" fill="white" font-size="26" font-weight="bold"
-        font-family="'Courier New', Courier, monospace" opacity="0">📊 GitHub Stats (auto-updated)
+        font-family="'Courier New', Courier, monospace" opacity="0">📊 GitHub Stats
     <animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.1s" fill="freeze"/>
   </text>
 
