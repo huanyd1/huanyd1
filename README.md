@@ -1,41 +1,143 @@
-### Hello there
-<a href="https://www.facebook.com/dohuanyd1/">
-  <img align="left" alt="Huan's Facebook" width="22px" src="https://cdn-icons-png.flaticon.com/512/733/733547.png" />
-</a>
-<a href="https://www.instagram.com/dohuan0905/">
-  <img align="left" alt="Huan's Instargram" width="22px" src="https://cdn-icons-png.flaticon.com/512/1409/1409946.png" />
-</a>
-<a href="https://www.pinterest.com/huanyd1/">
-  <img align="left" alt="Huan's Pinterest" width="22px" src="https://cdn-icons-png.flaticon.com/512/145/145808.png" />
-</a>
+<div align="center">
 
-![](https://visitor-badge.glitch.me/badge?page_id=huanyd1.huanyd1)
+# 🌌
 
-<br />
+```
+                    ✨
 
-Hi, i'm Huân, a passionate self-taught C# developer and a freelance software engineer from VietNam. my passion for software lies with dreaming up ideas and making them come true . I take great care in the experience, architecture, and code quality of the things I build.
-  
-- 💬 Ask me about anything, I am happy to help;
-- 💬 Most of project i will get it private;
+          ⭐                   ⭐
 
+                 🌙
 
-**Languages and tools:**  
+               HUÂN ĐỖ
 
-<code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/csharp/csharp.png"></code>
-<code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/php/php.png"></code>
-<code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/python/python.png"></code>
-<code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/sql/sql.png"></code>
-<code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/git/git.png"></code>
-<code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/html/html.png"></code>
-<code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/css/css.png"></code>
-<code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/javascript/javascript.png"></code>
+      Backend Engineer • .NET • Oracle
 
-<img align="right" alt="GIF" src="https://static.ybox.vn/2018/2/26/1e97a24e-1adc-11e8-9758-2e995a9a3302.gif" width="480" height="280"/>
+```
 
+<img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=24&duration=3000&pause=1200&color=7DD3FC&center=true&vCenter=true&width=750&lines=Welcome+to+my+GitHub...;Building+Backend+Systems...;Optimizing+SQL...;Learning+Something+New+Every+Day." />
 
-[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=huanyd1&langs_count=8)](https://github.com/anuraghazra/github-readme-stats)
+<br>
 
+> **Building software under the stars. 🌙**
 
-📈 My github stats
+</div>
 
-<p align="center"> <img src="https://github-readme-stats.vercel.app/api?username=huanyd1&show_icons=true&theme=midnight-purple" alt="huanyd1" />
+---
+
+# 💻 Terminal
+
+```bash
+PS C:\Users\visitor> whoami
+
+Huân Đỗ
+
+PS C:\Users\visitor> role
+
+Backend Engineer
+
+PS C:\Users\visitor> stack
+
+✔ ASP.NET Core
+✔ C#
+✔ Oracle
+✔ SQL
+✔ Angular
+✔ Docker
+✔ Git
+
+PS C:\Users\visitor> currently_learning
+
+✔ Oracle SQL Performance Tuning
+✔ Clean Architecture
+✔ System Design
+
+PS C:\Users\visitor> current_project
+
+🌌 Night Sky Website
+
+PS C:\Users\visitor> hobbies
+
+📷 Photography
+✈️ Travel
+🎮 Gaming
+☕ Coffee
+
+PS C:\Users\visitor> status
+
+██████████████████████
+
+ONLINE
+
+PS C:\Users\visitor> _
+```
+
+---
+
+# 🚀 Mission
+
+```text
+╭──────────────────────────────────────────────╮
+│                                              │
+│               CURRENT MISSION                │
+│                                              │
+│  ☑ Build Better APIs                         │
+│                                              │
+│  ☑ Learn Oracle SQL Tuning                   │
+│                                              │
+│  ☑ Improve System Design                     │
+│                                              │
+│  ☐ Become Senior Backend Engineer            │
+│                                              │
+╰──────────────────────────────────────────────╯
+```
+
+---
+
+# ⚡ Tech Stack
+
+<p align="center">
+
+<img src="https://skillicons.dev/icons?i=cs,dotnet,angular,ts,js,html,css,docker,git,github,linux,postgres,vscode&perline=7"/>
+
+</p>
+
+---
+
+# 🌌 Night Shift
+
+```text
+
+                    ⭐
+
+         ⭐                  ⭐
+
+              🌙
+
+      Coding under the stars...
+
+             ☕ + 🎵 + 💻
+
+```
+
+---
+
+<div align="center">
+
+### ⭐ Thanks for visiting
+
+```
+      *
+   *     *
+
+      🌙
+
+Keep Building.
+
+Keep Learning.
+
+Keep Dreaming.
+
+```
+
+</div>
