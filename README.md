@@ -6,25 +6,11 @@
 
 <br>
 
-<div align="center">
-
-<img src="https://skillicons.dev/icons?i=cs,dotnet,angular,docker,git,linux&perline=6">
-
-</div>
-
 ---
 
 <div align="center">
 
-<img src="./assets/stats.svg">
-
-</div>
-
----
-
-<div align="center">
-
-<img src="./assets/snake.svg">
+<img src="https://raw.githubusercontent.com/huanyd1/huanyd1/output/github-contribution-grid-snake.svg">
 
 </div>
 
