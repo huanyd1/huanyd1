@@ -1,21 +1,96 @@
 <svg width="1200"
-     height="500"
-     viewBox="0 0 1200 500"
+     height="520"
+     viewBox="0 0 1200 520"
      xmlns="http://www.w3.org/2000/svg">
 
+<defs>
+
+<linearGradient id="bg" x2="0" y2="1">
+    <stop stop-color="#020617"/>
+    <stop offset="1" stop-color="#111827"/>
+</linearGradient>
+
+<mask id="typing1">
+    <rect x="0" y="0" width="0" height="40" fill="white">
+        <animate attributeName="width"
+                 from="0"
+                 to="430"
+                 dur="2s"
+                 begin="2s"
+                 fill="freeze"/>
+    </rect>
+</mask>
+
+<mask id="typing2">
+    <rect x="0" y="0" width="0" height="40" fill="white">
+        <animate attributeName="width"
+                 from="0"
+                 to="250"
+                 dur="1.5s"
+                 begin="8s"
+                 fill="freeze"/>
+    </rect>
+</mask>
+
+</defs>
+
+
+<!-- Background -->
+
 <rect width="1200"
-      height="500"
-      rx="20"
-      fill="#020617"/>
+      height="520"
+      rx="25"
+      fill="url(#bg)"/>
 
 
-<!-- Terminal window -->
+<!-- Stars -->
 
-<rect x="80"
-      y="60"
-      width="1040"
+<g fill="white">
+
+<circle cx="120" cy="70" r="2">
+<animate attributeName="opacity"
+values="1;0.2;1"
+dur="3s"
+repeatCount="indefinite"/>
+</circle>
+
+<circle cx="300" cy="100" r="3">
+<animate attributeName="opacity"
+values="0.2;1;0.2"
+dur="4s"
+repeatCount="indefinite"/>
+</circle>
+
+<circle cx="950" cy="90" r="2">
+<animate attributeName="opacity"
+values="1;0.3;1"
+dur="2s"
+repeatCount="indefinite"/>
+</circle>
+
+</g>
+
+
+<!-- Moon -->
+
+<circle cx="1030"
+        cy="90"
+        r="40"
+        fill="#fde68a"/>
+
+<circle cx="1050"
+        cy="75"
+        r="40"
+        fill="#020617"/>
+
+
+<!-- Terminal -->
+
+<rect x="90"
+      y="70"
+      width="1020"
       height="380"
-      rx="15"
+      rx="18"
       fill="#0f172a"
       stroke="#334155"
       stroke-width="3"/>
@@ -23,170 +98,168 @@
 
 <!-- Header -->
 
-<circle cx="120" cy="100" r="10" fill="#ef4444"/>
-<circle cx="155" cy="100" r="10" fill="#eab308"/>
-<circle cx="190" cy="100" r="10" fill="#22c55e"/>
+<rect x="90"
+      y="70"
+      width="1020"
+      height="55"
+      rx="18"
+      fill="#111827"/>
 
 
-<text x="240"
-      y="108"
+<circle cx="130" cy="98" r="10" fill="#ef4444"/>
+<circle cx="165" cy="98" r="10" fill="#eab308"/>
+<circle cx="200" cy="98" r="10" fill="#22c55e"/>
+
+
+<text x="250"
+      y="105"
       fill="#94a3b8"
       font-size="22"
       font-family="monospace">
-huanyd1-terminal
+huan-terminal
 </text>
 
 
-<!-- Terminal text -->
+<!-- Boot command -->
 
-<text x="120"
-      y="170"
+<text x="130"
+      y="180"
       fill="#38bdf8"
+      font-size="24"
+      font-family="monospace">
+
+PS C:\github\huanyd1&gt;
+
+</text>
+
+
+<text x="520"
+      y="180"
+      fill="white"
+      font-size="24"
+      font-family="monospace"
+      mask="url(#typing1)">
+
+boot
+
+</text>
+
+
+<!-- Loading -->
+
+<text x="130"
+      y="240"
+      fill="#4ade80"
       font-size="24"
       font-family="monospace"
       opacity="0">
-<animate
- attributeName="opacity"
- from="0"
- to="1"
- dur="0.5s"
- begin="1s"
- fill="freeze"/>
-PS C:\github\huanyd1&gt; boot
+
+✓ Loading profile...
+
+<animate attributeName="opacity"
+         from="0"
+         to="1"
+         begin="5s"
+         dur="0.5s"
+         fill="freeze"/>
 
 </text>
 
 
-<text x="120"
-      y="220"
-      fill="white"
-      font-size="24"
-      font-family="monospace">
+<!-- Progress -->
 
-Initializing profile...
+<rect x="130"
+      y="265"
+      width="350"
+      height="12"
+      rx="6"
+      fill="#1e293b"
+      opacity="0">
 
-</text>
+<animate attributeName="opacity"
+         begin="5.5s"
+         to="1"
+         dur="0.3s"
+         fill="freeze"/>
 
-
-<text x="120"
-      y="270"
-      fill="#4ade80"
-      font-size="24"
-      font-family="monospace">
-
-✓ Succeed
-
-</text>
+</rect>
 
 
-<text x="120"
-      y="330"
+<rect x="130"
+      y="265"
+      width="0"
+      height="12"
+      rx="6"
+      fill="#38bdf8">
+
+<animate attributeName="width"
+         from="0"
+         to="350"
+         dur="2s"
+         begin="5.5s"
+         fill="freeze"/>
+
+</rect>
+
+
+<!-- whoami -->
+
+<text x="130"
+      y="340"
       fill="#38bdf8"
       font-size="24"
       font-family="monospace">
 
-PS C:\github\huanyd1&gt; whoami
+PS&gt;
 
 </text>
 
 
-<text x="120"
-      y="380"
+<text x="230"
+      y="340"
+      fill="white"
+      font-size="24"
+      font-family="monospace"
+      mask="url(#typing2)">
+
+whoami
+
+</text>
+
+
+<text x="130"
+      y="390"
       fill="white"
       font-size="28"
-      font-family="monospace">
+      font-family="monospace"
+      opacity="0">
 
-Huân Đỗ | Backend Engineer
+Huân Đỗ
+
+<animate attributeName="opacity"
+         from="0"
+         to="1"
+         begin="10s"
+         dur="0.5s"
+         fill="freeze"/>
 
 </text>
-
-
-<!-- Animated Stars -->
-
-<g fill="white">
-
-<circle cx="100" cy="70" r="2">
-<animate 
-attributeName="opacity"
-values="1;0.2;1"
-dur="3s"
-repeatCount="indefinite"/>
-</circle>
-
-
-<circle cx="260" cy="110" r="3">
-<animate 
-attributeName="opacity"
-values="0.2;1;0.2"
-dur="4s"
-repeatCount="indefinite"/>
-</circle>
-
-
-<circle cx="950" cy="80" r="2">
-<animate 
-attributeName="opacity"
-values="1;0.3;1"
-dur="2s"
-repeatCount="indefinite"/>
-</circle>
-
-
-<circle cx="1080" cy="150" r="3">
-<animate 
-attributeName="opacity"
-values="0.3;1;0.3"
-dur="5s"
-repeatCount="indefinite"/>
-</circle>
-
-
-</g>
-
 
 
 <!-- Cursor -->
 
-<rect x="310"
-      y="320"
+<rect x="340"
+      y="370"
       width="14"
-      height="24"
+      height="30"
       fill="#38bdf8">
 
-<animate
-attributeName="opacity"
+<animate attributeName="opacity"
 values="1;0;1"
 dur="1s"
 repeatCount="indefinite"/>
 
 </rect>
 
-
-
-<!-- Loading Bar -->
-
-<rect x="140"
-      y="285"
-      width="300"
-      height="12"
-      rx="6"
-      fill="#1e293b"/>
-
-
-<rect x="140"
-      y="285"
-      width="300"
-      height="12"
-      rx="6"
-      fill="#38bdf8">
-
-<animate
-attributeName="width"
-from="0"
-to="300"
-dur="2s"
-repeatCount="1"/>
-
-</rect>
 
 </svg>
