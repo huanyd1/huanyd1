@@ -4,8 +4,6 @@
 
 </div>
 
----
-
 <div align="center">
 <table>
 <tr>
