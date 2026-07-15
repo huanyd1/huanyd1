@@ -43,8 +43,15 @@ huanyd1-terminal
       y="170"
       fill="#38bdf8"
       font-size="24"
-      font-family="monospace">
-
+      font-family="monospace"
+      opacity="0">
+<animate
+ attributeName="opacity"
+ from="0"
+ to="1"
+ dur="0.5s"
+ begin="1s"
+ fill="freeze"/>
 PS C:\github\huanyd1&gt; boot
 
 </text>
