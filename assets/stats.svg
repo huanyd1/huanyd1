@@ -1,0 +1,20 @@
+<circle cx="100"
+        cy="50"
+        r="3"
+        fill="white">
+
+<animate
+ attributeName="cx"
+ from="100"
+ to="1000"
+ dur="5s"
+ repeatCount="indefinite"/>
+
+<animate
+ attributeName="cy"
+ from="50"
+ to="300"
+ dur="5s"
+ repeatCount="indefinite"/>
+
+</circle>

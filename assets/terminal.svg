@@ -1,0 +1,110 @@
+<svg width="1200"
+     height="500"
+     viewBox="0 0 1200 500"
+     xmlns="http://www.w3.org/2000/svg">
+
+<rect width="1200"
+      height="500"
+      rx="20"
+      fill="#020617"/>
+
+
+<!-- Terminal window -->
+
+<rect x="80"
+      y="60"
+      width="1040"
+      height="380"
+      rx="15"
+      fill="#0f172a"
+      stroke="#334155"
+      stroke-width="3"/>
+
+
+<!-- Header -->
+
+<circle cx="120" cy="100" r="10" fill="#ef4444"/>
+<circle cx="155" cy="100" r="10" fill="#eab308"/>
+<circle cx="190" cy="100" r="10" fill="#22c55e"/>
+
+
+<text x="240"
+      y="108"
+      fill="#94a3b8"
+      font-size="22"
+      font-family="monospace">
+huan-terminal
+</text>
+
+
+<!-- Terminal text -->
+
+<text x="120"
+      y="170"
+      fill="#38bdf8"
+      font-size="24"
+      font-family="monospace">
+
+PS C:\github\huanyd1&gt; boot
+
+</text>
+
+
+<text x="120"
+      y="220"
+      fill="white"
+      font-size="24"
+      font-family="monospace">
+
+Initializing profile...
+
+</text>
+
+
+<text x="120"
+      y="270"
+      fill="#4ade80"
+      font-size="24"
+      font-family="monospace">
+
+✓ Connected
+
+</text>
+
+
+<text x="120"
+      y="330"
+      fill="#38bdf8"
+      font-size="24"
+      font-family="monospace">
+
+PS C:\github\huanyd1&gt; whoami
+
+</text>
+
+
+<text x="120"
+      y="380"
+      fill="white"
+      font-size="28"
+      font-family="monospace">
+
+Huân Đỗ | Backend Engineer
+
+</text>
+
+<rect x="120"
+      y="400"
+      width="15"
+      height="30"
+      fill="#38bdf8">
+
+
+<animate
+ attributeName="opacity"
+ values="1;0;1"
+ dur="1s"
+ repeatCount="indefinite"/>
+
+</rect>
+</svg>
