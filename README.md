@@ -27,3 +27,6 @@
 <img src="./assets/snake.svg">
 
 </div>
+
+
+[![Anurag's GitHub stats](https://github-stats-extended.vercel.app/api?username=huanyd1)](https://github.com/stats-organization/github-stats-extended)
