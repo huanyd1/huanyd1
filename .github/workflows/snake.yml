@@ -2,39 +2,35 @@ name: Generate Snake
 
 on:
   schedule:
-    - cron: "0 */6 * * *"   
-  push:
-    branches: [main]
-  workflow_dispatch: {}
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
-  generate-snake:
+  generate:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+
     steps:
-      - name: Generate snake.svg
-        uses: Platane/snk@v3
-        id: snake-gif
+      - uses: actions/checkout@v5
+
+      - run: mkdir -p assets
+
+      - uses: Platane/snk@v3
         with:
           github_user_name: huanyd1
           outputs: |
             assets/snake.svg?color_snake=#38bdf8&color_dots=#1e293b,#0e4429,#006d32,#26a641,#39d353
 
-      - name: Checkout repo
-        uses: actions/checkout@v5
-
-      - name: Generate snake.svg
-        uses: Platane/snk@v3
-        with:
-          github_user_name: huanyd1
-          outputs: |
-            assets/snake.svg?color_snake=#38bdf8&color_dots=#1e293b,#0e4429,#006d32,#26a641,#39d353
-
-      - name: Commit nếu có thay đổi
+      - name: Commit
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name github-actions[bot]
+          git config user.email github-actions[bot]@users.noreply.github.com
+
           git add assets/snake.svg
-          git diff --staged --quiet || git commit -m "chore: auto-update snake.svg"
-          git push
+
+          if ! git diff --cached --quiet; then
+            git commit -m "Update snake"
+            git push
+          fi
