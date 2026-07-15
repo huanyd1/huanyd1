@@ -22,7 +22,7 @@ jobs:
             assets/snake.svg?color_snake=#38bdf8&color_dots=#1e293b,#0e4429,#006d32,#26a641,#39d353
 
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Generate snake.svg
         uses: Platane/snk@v3
