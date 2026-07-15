@@ -115,28 +115,66 @@ def compute_stats(user):
 
 def render_svg(stats: dict) -> str:
     width, height = 1200, 420
-    font = "'Times New Roman', Times, serif"
+    font = "'Courier New', Courier, monospace"
 
-    def stat_card(x, label, value, color):
+    def count_up(x, y, final_value, font_size, color, begin, duration=1.1, steps=9):
+        """Hiệu ứng đếm số chạy lên. SMIL không animate được nội dung text
+        liên tục, nên xếp chồng nhiều <text> ở các mốc giá trị trung gian
+        rồi bật/tắt nhanh bằng opacity (fill="freeze") để tạo cảm giác số
+        đang nhảy lên, chỉ 1 giá trị hiển thị tại một thời điểm."""
+        try:
+            final_int = int(final_value)
+        except (TypeError, ValueError):
+            return (f'<text x="{x}" y="{y}" fill="{color}" font-size="{font_size}" '
+                    f'font-weight="bold" font-family="{font}">{final_value}</text>')
+
+        step_dur = duration / steps
+        values = sorted(set(round(final_int * i / steps) for i in range(1, steps + 1)))
+        if not values or values[-1] != final_int:
+            values.append(final_int)
+
+        out = []
+        for i, v in enumerate(values):
+            t_show = begin + i * step_dur
+            hide = ""
+            if i < len(values) - 1:
+                t_hide = begin + (i + 1) * step_dur
+                hide = (f'<set attributeName="opacity" to="0" '
+                        f'begin="{t_hide:.2f}s" fill="freeze"/>')
+            out.append(
+                f'<text x="{x}" y="{y}" fill="{color}" font-size="{font_size}" '
+                f'font-weight="bold" font-family="{font}" opacity="0">{v}'
+                f'<animate attributeName="opacity" from="0" to="1" dur="0.08s" '
+                f'begin="{t_show:.2f}s" fill="freeze"/>{hide}</text>'
+            )
+        return "\n".join(out)
+
+    def stat_card(x, label, value, color, delay):
+        number = count_up(20, 55, value, 38, color, begin=delay + 0.35)
         return f"""
-  <g transform="translate({x}, 90)">
+  <g transform="translate({x}, 90)" opacity="0">
+    <animate attributeName="opacity" from="0" to="1" dur="0.5s"
+             begin="{delay:.2f}s" fill="freeze"/>
     <rect width="250" height="120" rx="14" fill="#0f172a"
           stroke="#334155" stroke-width="2"/>
-    <text x="20" y="40" fill="{color}" font-size="40" font-weight="bold"
-          font-family="{font}">{value}</text>
-    <text x="20" y="75" fill="#94a3b8" font-size="18"
+    {number}
+    <text x="20" y="90" fill="#94a3b8" font-size="16"
           font-family="{font}">{label}</text>
   </g>"""
 
     cards = "".join([
-        stat_card(60, "GitHub Stars", stats["stars"], "#eab308"),
-        stat_card(330, "Commits (năm nay)", stats["commits"], "#4ade80"),
-        stat_card(600, "Repositories", stats["repos"], "#38bdf8"),
-        stat_card(870, "Followers", stats["followers"], "#f472b6"),
+        stat_card(60, "GitHub Stars", stats["stars"], "#eab308", delay=0.6),
+        stat_card(330, "Commits (năm nay)", stats["commits"], "#4ade80", delay=0.9),
+        stat_card(600, "Repositories", stats["repos"], "#38bdf8", delay=1.2),
+        stat_card(870, "Followers", stats["followers"], "#f472b6", delay=1.5),
     ])
 
-    # Thanh Top Languages xếp chồng theo tỉ lệ %
+    # Thanh Top Languages: các đoạn màu đặt cố định ở vị trí cuối cùng,
+    # dùng clip-path animate width 0 -> đầy đủ để tạo hiệu ứng "vén màn"
     bar_x, bar_y, bar_w, bar_h = 60, 260, 1080, 34
+    bar_begin, bar_dur = 2.2, 1.3
+    legend_begin = bar_begin + bar_dur + 0.2
+
     cursor = bar_x
     bar_segments = ""
     legend_items = ""
@@ -148,10 +186,15 @@ def render_svg(stats: dict) -> str:
         )
         legend_x = bar_x + (i % 3) * 360
         legend_y = bar_y + 70 + (i // 3) * 34
+        delay = legend_begin + i * 0.15
         legend_items += f"""
-  <circle cx="{legend_x}" cy="{legend_y - 6}" r="7" fill="{lang['color']}"/>
-  <text x="{legend_x + 18}" y="{legend_y}" fill="white" font-size="18"
-        font-family="{font}">{lang['name']} · {lang['percent']}%</text>"""
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" dur="0.35s"
+             begin="{delay:.2f}s" fill="freeze"/>
+    <circle cx="{legend_x}" cy="{legend_y - 6}" r="7" fill="{lang['color']}"/>
+    <text x="{legend_x + 18}" y="{legend_y}" fill="white" font-size="18"
+          font-family="{font}">{lang['name']} · {lang['percent']}%</text>
+  </g>"""
         cursor += seg_w
 
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}"
@@ -162,24 +205,31 @@ def render_svg(stats: dict) -> str:
       <stop offset="0%" stop-color="#0b1224"/>
       <stop offset="100%" stop-color="#020617"/>
     </radialGradient>
+    <clipPath id="barClip">
+      <rect x="{bar_x}" y="{bar_y}" width="0" height="{bar_h}" rx="10">
+        <animate attributeName="width" from="0" to="{bar_w}" dur="{bar_dur}s"
+                 begin="{bar_begin}s" fill="freeze"/>
+      </rect>
+    </clipPath>
   </defs>
 
   <rect width="{width}" height="{height}" rx="20" fill="url(#bgGlow2)"/>
 
   <text x="60" y="50" fill="white" font-size="26" font-weight="bold"
-        font-family="{font}">📊 GitHub Stats (auto-updated)</text>
+        font-family="{font}" opacity="0">📊 GitHub Stats (auto-updated)
+    <animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.1s" fill="freeze"/>
+  </text>
 
   {cards}
 
   <text x="60" y="240" fill="#94a3b8" font-size="18"
-        font-family="{font}">Top Languages</text>
+        font-family="{font}" opacity="0">Top Languages
+    <animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="2.0s" fill="freeze"/>
+  </text>
 
   <rect x="{bar_x}" y="{bar_y}" width="{bar_w}" height="{bar_h}" rx="10"
         fill="#1e293b"/>
   <g clip-path="url(#barClip)">
-    <clipPath id="barClip">
-      <rect x="{bar_x}" y="{bar_y}" width="{bar_w}" height="{bar_h}" rx="10"/>
-    </clipPath>
     {bar_segments}
   </g>
 
