@@ -114,7 +114,25 @@ def compute_stats(user):
 
 
 def render_svg(stats: dict) -> str:
-    width, height = 1200, 420
+    # Layout khớp style terminal.svg: canvas ngoài có glow nền, bên trong
+    # là 1 "khung cửa sổ" riêng (box tối, viền, bo góc) + 3 chấm tròn +
+    # label — y hệt toạ độ/màu terminal dùng, để 2 phần trông như cùng
+    # 1 app đang cuộn tiếp chứ không phải 2 widget khác nhau.
+    CANVAS_W, CANVAS_H = 1200, 540
+    BOX_X, BOX_Y, BOX_W, BOX_H = 80, 60, 1040, 440
+    CONTENT_X = 120
+    CARD_W, CARD_H, CARD_GAP = 225, 110, 15
+    CARD_XS = [CONTENT_X + i * (CARD_W + CARD_GAP) for i in range(4)]
+    TITLE_Y = 150
+    CARDS_Y = 175
+    LANG_LABEL_Y = CARDS_Y + CARD_H + 45
+    BAR_Y = LANG_LABEL_Y + 20
+    BAR_H = 30
+    BAR_X = CONTENT_X
+    BAR_W = BOX_X + BOX_W - 40 - BAR_X
+    LEGEND_Y_START = BAR_Y + BAR_H + 45
+    LEGEND_ROW_H = 32
+
     font = "'Courier New', Courier, monospace"
 
     def count_up(x, y, final_value, font_size, color, begin, duration=1.1, steps=9):
@@ -150,54 +168,53 @@ def render_svg(stats: dict) -> str:
         return "\n".join(out)
 
     def stat_card(x, label, value, color, delay):
-        number = count_up(20, 55, value, 38, color, begin=delay + 0.35)
+        number = count_up(20, 50, value, 34, color, begin=delay + 0.35)
         return f"""
-  <g transform="translate({x}, 90)" opacity="0">
+  <g transform="translate({x}, {CARDS_Y})" opacity="0">
     <animate attributeName="opacity" from="0" to="1" dur="0.5s"
              begin="{delay:.2f}s" fill="freeze"/>
-    <rect width="250" height="120" rx="14" fill="#0f172a"
+    <rect width="{CARD_W}" height="{CARD_H}" rx="14" fill="#0f172a"
           stroke="#334155" stroke-width="2"/>
     {number}
-    <text x="20" y="90" fill="#94a3b8" font-size="16"
+    <text x="20" y="85" fill="#94a3b8" font-size="15"
           font-family="{font}">{label}</text>
   </g>"""
 
     cards = "".join([
-        stat_card(60, "GitHub Stars", stats["stars"], "#eab308", delay=0.6),
-        stat_card(330, "Commits (năm nay)", stats["commits"], "#4ade80", delay=0.9),
-        stat_card(600, "Repositories", stats["repos"], "#38bdf8", delay=1.2),
-        stat_card(870, "Followers", stats["followers"], "#f472b6", delay=1.5),
+        stat_card(CARD_XS[0], "GitHub Stars", stats["stars"], "#eab308", delay=0.6),
+        stat_card(CARD_XS[1], "Commits (năm nay)", stats["commits"], "#4ade80", delay=0.9),
+        stat_card(CARD_XS[2], "Repositories", stats["repos"], "#38bdf8", delay=1.2),
+        stat_card(CARD_XS[3], "Followers", stats["followers"], "#f472b6", delay=1.5),
     ])
 
     # Thanh Top Languages: các đoạn màu đặt cố định ở vị trí cuối cùng,
     # dùng clip-path animate width 0 -> đầy đủ để tạo hiệu ứng "vén màn"
-    bar_x, bar_y, bar_w, bar_h = 60, 260, 1080, 34
     bar_begin, bar_dur = 2.2, 1.3
     legend_begin = bar_begin + bar_dur + 0.2
 
-    cursor = bar_x
+    cursor = BAR_X
     bar_segments = ""
     legend_items = ""
     for i, lang in enumerate(stats["languages"]):
-        seg_w = bar_w * (lang["percent"] / 100)
+        seg_w = BAR_W * (lang["percent"] / 100)
         bar_segments += (
-            f'<rect x="{cursor:.1f}" y="{bar_y}" width="{seg_w:.1f}" '
-            f'height="{bar_h}" fill="{lang["color"]}"/>'
+            f'<rect x="{cursor:.1f}" y="{BAR_Y}" width="{seg_w:.1f}" '
+            f'height="{BAR_H}" fill="{lang["color"]}"/>'
         )
-        legend_x = bar_x + (i % 3) * 360
-        legend_y = bar_y + 70 + (i // 3) * 34
+        legend_x = BAR_X + (i % 3) * 320
+        legend_y = LEGEND_Y_START + (i // 3) * LEGEND_ROW_H
         delay = legend_begin + i * 0.15
         legend_items += f"""
   <g opacity="0">
     <animate attributeName="opacity" from="0" to="1" dur="0.35s"
              begin="{delay:.2f}s" fill="freeze"/>
     <circle cx="{legend_x}" cy="{legend_y - 6}" r="7" fill="{lang['color']}"/>
-    <text x="{legend_x + 18}" y="{legend_y}" fill="white" font-size="18"
+    <text x="{legend_x + 18}" y="{legend_y}" fill="white" font-size="17"
           font-family="{font}">{lang['name']} · {lang['percent']}%</text>
   </g>"""
         cursor += seg_w
 
-    return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}"
+    return f"""<svg width="{CANVAS_W}" height="{CANVAS_H}" viewBox="0 0 {CANVAS_W} {CANVAS_H}"
      xmlns="http://www.w3.org/2000/svg">
 
   <defs>
@@ -206,28 +223,37 @@ def render_svg(stats: dict) -> str:
       <stop offset="100%" stop-color="#020617"/>
     </radialGradient>
     <clipPath id="barClip">
-      <rect x="{bar_x}" y="{bar_y}" width="0" height="{bar_h}" rx="10">
-        <animate attributeName="width" from="0" to="{bar_w}" dur="{bar_dur}s"
+      <rect x="{BAR_X}" y="{BAR_Y}" width="0" height="{BAR_H}" rx="10">
+        <animate attributeName="width" from="0" to="{BAR_W}" dur="{bar_dur}s"
+
                  begin="{bar_begin}s" fill="freeze"/>
       </rect>
     </clipPath>
   </defs>
 
-  <rect width="{width}" height="{height}" rx="20" fill="url(#bgGlow2)"/>
+  <rect width="{CANVAS_W}" height="{CANVAS_H}" rx="20" fill="url(#bgGlow2)"/>
 
-  <text x="60" y="50" fill="white" font-size="26" font-weight="bold"
+  <rect x="{BOX_X}" y="{BOX_Y}" width="{BOX_W}" height="{BOX_H}" rx="15"
+        fill="#0f172a" stroke="#334155" stroke-width="3"/>
+
+  <circle cx="120" cy="100" r="10" fill="#ef4444"/>
+  <circle cx="155" cy="100" r="10" fill="#eab308"/>
+  <circle cx="190" cy="100" r="10" fill="#22c55e"/>
+  <text x="240" y="108" fill="#94a3b8" font-size="22" font-family="{font}">huanyd1-stats</text>
+
+  <text x="{CONTENT_X}" y="{TITLE_Y}" fill="white" font-size="24" font-weight="bold"
         font-family="{font}" opacity="0">📊 GitHub Stats (auto-updated)
     <animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.1s" fill="freeze"/>
   </text>
 
   {cards}
 
-  <text x="60" y="240" fill="#94a3b8" font-size="18"
+  <text x="{CONTENT_X}" y="{LANG_LABEL_Y}" fill="#94a3b8" font-size="18"
         font-family="{font}" opacity="0">Top Languages
     <animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="2.0s" fill="freeze"/>
   </text>
 
-  <rect x="{bar_x}" y="{bar_y}" width="{bar_w}" height="{bar_h}" rx="10"
+  <rect x="{BAR_X}" y="{BAR_Y}" width="{BAR_W}" height="{BAR_H}" rx="10"
         fill="#1e293b"/>
   <g clip-path="url(#barClip)">
     {bar_segments}
