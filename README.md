@@ -1,14 +1,6 @@
 <div align="center">
 
-<img src="./assets/terminal.svg" width="100%">
-
-<br><br>
-
-<img src="./assets/github-stats.svg" width="100%">
-
-<br><br>
-
-<img src="./assets/snake.svg" width="100%">
+<img src="./assets/profile.svg" width="100%">
 
 <br><br>
 
