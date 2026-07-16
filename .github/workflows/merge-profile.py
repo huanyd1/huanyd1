@@ -101,30 +101,63 @@ def typed_chars(text, x_start, y, begin_start, step=0.1, color="white"):
     return "\n".join(out), end_time, end_x
 
 
-def build_connector(command, t_start, width=1200, height=90):
-    """Thanh lệnh nối tiếp: nền tối giống terminal, gõ 'PS> {command}',
-    cursor nháy, rồi return timestamp khi nên 'gọi' khối bên dưới."""
-    prompt_svg, t_after_prompt, x_after_prompt = typed_chars(
-        "PS>", 40, 55, t_start, color="#38bdf8")
-    cmd_svg, t_after_cmd, x_after_cmd = typed_chars(
-        command, x_after_prompt + CHAR_W, 55, t_after_prompt + 0.3, color="white")
+def extend_terminal_with_commands(term_raw_text, t_line5_start, t_line6_start):
+    """Kéo dài box terminal GỐC của user (không tạo box rời), rồi chèn
+    2 dòng lệnh 'PS> github-stats' và 'PS> snake' vào ngay bên trong,
+    dùng đúng lưới ký tự/màu như các dòng lệnh khác trong file để
+    trông liền mạch như 1 phiên terminal đang cuộn tiếp."""
+    OLD_VB_H, NEW_VB_H = 560, 660
+    OLD_BOX_H, NEW_BOX_H = 480, 580
+    OLD_BG_H, NEW_BG_H = 580, 680
+    Y_LINE5, Y_LINE6 = 555, 610
 
+    text = term_raw_text
+    text = text.replace(f'viewBox="0 0 1200 {OLD_VB_H}"',
+                         f'viewBox="0 0 1200 {NEW_VB_H}"')
+    text = text.replace(f'width="1200" height="{OLD_BG_H}" rx="20"',
+                         f'width="1200" height="{NEW_BG_H}" rx="20"')
+    text = text.replace(f'width="1040" height="{OLD_BOX_H}" rx="15"',
+                         f'width="1040" height="{NEW_BOX_H}" rx="15"')
+
+    root = ET.fromstring(text)
+
+    def command_line_xml(command, y, t_start):
+        prompt_svg, t_after_prompt, x_after_prompt = typed_chars(
+            "PS>", 120, y, t_start, color="#38bdf8")
+        cmd_svg, t_after_cmd, x_after_cmd = typed_chars(
+            command, x_after_prompt + CHAR_W, y, t_after_prompt + 0.3, color="white")
+        cursor_x = x_after_cmd + CHAR_W
+        cursor_svg = (
+            f'<rect x="{cursor_x:.1f}" y="{y-20}" width="12" height="24" '
+            f'fill="#38bdf8" opacity="0">'
+            f'<animate attributeName="opacity" values="1;0;1" dur="0.4s" '
+            f'begin="{t_after_cmd:.2f}s" repeatCount="2"/></rect>'
+        )
+        t_trigger = t_after_cmd + SETTLE_BUFFER
+        return f"{prompt_svg}\n{cmd_svg}\n{cursor_svg}", t_trigger
+
+    line5_xml, t_stats_trigger = command_line_xml(
+        "github-stats", Y_LINE5, t_line5_start)
+
+    return root, line5_xml, t_stats_trigger, Y_LINE6
+
+
+def append_line6(y, t_start):
+    """Dòng lệnh thứ 6 ('snake') được thêm sau khi biết t_line6_start
+    (phụ thuộc thời điểm github-stats chạy xong animate, tính sau)."""
+    prompt_svg, t_after_prompt, x_after_prompt = typed_chars(
+        "PS>", 120, y, t_start, color="#38bdf8")
+    cmd_svg, t_after_cmd, x_after_cmd = typed_chars(
+        "snake", x_after_prompt + CHAR_W, y, t_after_prompt + 0.3, color="white")
     cursor_x = x_after_cmd + CHAR_W
     cursor_svg = (
-        f'<rect x="{cursor_x:.1f}" y="35" width="12" height="24" fill="#38bdf8" opacity="0">'
+        f'<rect x="{cursor_x:.1f}" y="{y-20}" width="12" height="24" '
+        f'fill="#38bdf8" opacity="0">'
         f'<animate attributeName="opacity" values="1;0;1" dur="0.4s" '
         f'begin="{t_after_cmd:.2f}s" repeatCount="2"/></rect>'
     )
-
-    svg = f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}">
-  <rect width="{width}" height="{height}" rx="12" fill="#0f172a" stroke="#334155" stroke-width="2"/>
-  {prompt_svg}
-  {cmd_svg}
-  {cursor_svg}
-</svg>"""
-
     t_trigger = t_after_cmd + SETTLE_BUFFER
-    return svg, height, t_trigger
+    return f"{prompt_svg}\n{cmd_svg}\n{cursor_svg}", t_trigger
 
 
 def wrap_stats_section(xml_str, trigger_time, trigger_id="stats-trigger"):
@@ -162,37 +195,40 @@ def wrap_snake_section(xml_str, trigger_time, trigger_id="snake-trigger"):
 
 
 def main():
-    term_root = read_root("assets/terminal.svg")
-    stats_root = read_root("assets/github-stats.svg")
-    snake_root = read_root("assets/snake.svg")
+    term_raw_text = open("assets/terminal.svg", encoding="utf-8").read()
+
+    # --- Kéo dài box terminal gốc, chèn dòng lệnh "github-stats" ngay bên trong ---
+    term_root, line5_xml, t_stats_trigger, y_line6 = extend_terminal_with_commands(
+        term_raw_text, T_CONNECTOR_1_START, None)
 
     term_w, term_h = get_dimensions(term_root)
-    stats_w, stats_h = get_dimensions(stats_root)
-    snake_w, snake_h = get_dimensions(snake_root)
-
     term_xml = namespace_ids(inner_xml(term_root), "term")
+
+    # --- Đọc github-stats, tính thời lượng animate one-shot thật của nó ---
+    stats_root = read_root("assets/github-stats.svg")
+    stats_w, stats_h = get_dimensions(stats_root)
     stats_xml = namespace_ids(inner_xml(stats_root), "stats")
-    snake_xml = namespace_ids(inner_xml(snake_root), "snake")
-
     stats_duration = max_end_time(stats_xml)
-
-    conn1_svg, conn1_h, t_stats_trigger = build_connector(
-        "github-stats", T_CONNECTOR_1_START)
-
     t_stats_done = t_stats_trigger + stats_duration
 
-    t_connector_2_start = t_stats_done + GAP_AFTER_SECTION
-    conn2_svg, conn2_h, t_snake_trigger = build_connector(
-        "snake", t_connector_2_start)
+    # --- Dòng lệnh "snake", chỉ gõ sau khi github-stats đã chạy xong thật ---
+    t_line6_start = t_stats_done + GAP_AFTER_SECTION
+    line6_xml, t_snake_trigger = append_line6(y_line6, t_line6_start)
 
-    print(f"[timing] connector1@{T_CONNECTOR_1_START:.1f}s  "
+    combined_term_xml = f"{term_xml}\n{line5_xml}\n{line6_xml}"
+
+    print(f"[timing] line5_github-stats@{T_CONNECTOR_1_START:.1f}s  "
           f"stats_trigger@{t_stats_trigger:.2f}s  "
           f"stats_internal_dur={stats_duration:.2f}s  "
           f"stats_done@{t_stats_done:.2f}s  "
-          f"connector2@{t_connector_2_start:.2f}s  "
+          f"line6_snake@{t_line6_start:.2f}s  "
           f"snake_trigger@{t_snake_trigger:.2f}s")
 
     stats_wrapped = wrap_stats_section(stats_xml, t_stats_trigger)
+
+    snake_root = read_root("assets/snake.svg")
+    snake_w, snake_h = get_dimensions(snake_root)
+    snake_xml = namespace_ids(inner_xml(snake_root), "snake")
     snake_wrapped = wrap_snake_section(snake_xml, t_snake_trigger)
 
     GAP = 24
@@ -200,18 +236,16 @@ def main():
     cursor_y = 0.0
     max_width = max(term_w, stats_w, snake_w, 1200)
 
-    def add_block(width, height, content_svg_or_xml):
+    def add_block(width, height, content_xml):
         nonlocal cursor_y
         block = (f'<svg x="0" y="{cursor_y:.1f}" width="{width:.0f}" '
                   f'height="{height:.0f}" viewBox="0 0 {width:.0f} {height:.0f}">'
-                  f'{content_svg_or_xml}</svg>')
+                  f'{content_xml}</svg>')
         blocks.append(block)
         cursor_y += height + GAP
 
-    add_block(term_w, term_h, term_xml)
-    add_block(1200, conn1_h, conn1_svg)
+    add_block(term_w, term_h, combined_term_xml)
     add_block(stats_w, stats_h, stats_wrapped)
-    add_block(1200, conn2_h, conn2_svg)
     add_block(snake_w, snake_h, snake_wrapped)
 
     total_height = cursor_y - GAP

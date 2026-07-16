@@ -1,8 +1,8 @@
-<svg width="1200" height="1556"
-     viewBox="0 0 1200 1556"
+<svg width="1200" height="1428"
+     viewBox="0 0 1200 1428"
      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 
-<svg x="0" y="0.0" width="1200" height="560" viewBox="0 0 1200 560"><defs xmlns="http://www.w3.org/2000/svg">
+<svg x="0" y="0.0" width="1200" height="660" viewBox="0 0 1200 660"><defs xmlns="http://www.w3.org/2000/svg">
   <radialGradient id="term-bgGlow" cx="50%" cy="0%" r="80%">
     <stop offset="0%" stop-color="#0b1224" />
     <stop offset="100%" stop-color="#020617" />
@@ -13,7 +13,7 @@
   </linearGradient>
 </defs>
 
-<rect xmlns="http://www.w3.org/2000/svg" width="1200" height="580" rx="20" fill="url(#term-bgGlow)" />
+<rect xmlns="http://www.w3.org/2000/svg" width="1200" height="680" rx="20" fill="url(#term-bgGlow)" />
 
 <g xmlns="http://www.w3.org/2000/svg" fill="white">
   <circle cx="100" cy="70" r="2">
@@ -57,7 +57,7 @@
 </g>
 
 <g xmlns="http://www.w3.org/2000/svg">
-  <rect x="80" y="60" width="1040" height="480" rx="15" fill="#0f172a" stroke="#334155" stroke-width="3" />
+  <rect x="80" y="60" width="1040" height="580" rx="15" fill="#0f172a" stroke="#334155" stroke-width="3" />
 
   <circle cx="120" cy="100" r="10" fill="#ef4444" />
   <circle cx="155" cy="100" r="10" fill="#eab308" />
@@ -226,27 +226,33 @@
   </text>
 </g>
 
-</svg>
-<svg x="0" y="584.0" width="1200" height="90" viewBox="0 0 1200 90"><svg width="1200" height="90" viewBox="0 0 1200 90">
-  <rect width="1200" height="90" rx="12" fill="#0f172a" stroke="#334155" stroke-width="2"/>
-  <text x="40.0" y="55" fill="#38bdf8" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">P<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="28.00s" fill="freeze"/></text>
-<text x="54.4" y="55" fill="#38bdf8" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">S<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="28.10s" fill="freeze"/></text>
-<text x="68.8" y="55" fill="#38bdf8" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">&gt;<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="28.20s" fill="freeze"/></text>
-  <text x="97.6" y="55" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">g<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="28.60s" fill="freeze"/></text>
-<text x="112.0" y="55" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">i<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="28.70s" fill="freeze"/></text>
-<text x="126.4" y="55" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">t<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="28.80s" fill="freeze"/></text>
-<text x="140.8" y="55" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">h<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="28.90s" fill="freeze"/></text>
-<text x="155.2" y="55" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">u<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="29.00s" fill="freeze"/></text>
-<text x="169.6" y="55" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">b<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="29.10s" fill="freeze"/></text>
-<text x="184.0" y="55" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">-<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="29.20s" fill="freeze"/></text>
-<text x="198.4" y="55" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">s<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="29.30s" fill="freeze"/></text>
-<text x="212.8" y="55" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">t<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="29.40s" fill="freeze"/></text>
-<text x="227.2" y="55" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">a<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="29.50s" fill="freeze"/></text>
-<text x="241.6" y="55" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">t<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="29.60s" fill="freeze"/></text>
-<text x="256.0" y="55" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">s<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="29.70s" fill="freeze"/></text>
-  <rect x="284.8" y="35" width="12" height="24" fill="#38bdf8" opacity="0"><animate attributeName="opacity" values="1;0;1" dur="0.4s" begin="29.80s" repeatCount="2"/></rect>
-</svg></svg>
-<svg x="0" y="698.0" width="1200" height="420" viewBox="0 0 1200 420"><g opacity="0"><animate id="stats-trigger" attributeName="opacity" from="0" to="1" dur="0.4s" begin="30.60s" fill="freeze"/><defs xmlns="http://www.w3.org/2000/svg">
+
+<text x="120.0" y="555" fill="#38bdf8" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">P<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="28.00s" fill="freeze"/></text>
+<text x="134.4" y="555" fill="#38bdf8" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">S<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="28.10s" fill="freeze"/></text>
+<text x="148.8" y="555" fill="#38bdf8" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">&gt;<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="28.20s" fill="freeze"/></text>
+<text x="177.6" y="555" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">g<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="28.60s" fill="freeze"/></text>
+<text x="192.0" y="555" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">i<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="28.70s" fill="freeze"/></text>
+<text x="206.4" y="555" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">t<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="28.80s" fill="freeze"/></text>
+<text x="220.8" y="555" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">h<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="28.90s" fill="freeze"/></text>
+<text x="235.2" y="555" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">u<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="29.00s" fill="freeze"/></text>
+<text x="249.6" y="555" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">b<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="29.10s" fill="freeze"/></text>
+<text x="264.0" y="555" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">-<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="29.20s" fill="freeze"/></text>
+<text x="278.4" y="555" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">s<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="29.30s" fill="freeze"/></text>
+<text x="292.8" y="555" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">t<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="29.40s" fill="freeze"/></text>
+<text x="307.2" y="555" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">a<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="29.50s" fill="freeze"/></text>
+<text x="321.6" y="555" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">t<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="29.60s" fill="freeze"/></text>
+<text x="336.0" y="555" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">s<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="29.70s" fill="freeze"/></text>
+<rect x="364.8" y="535" width="12" height="24" fill="#38bdf8" opacity="0"><animate attributeName="opacity" values="1;0;1" dur="0.4s" begin="29.80s" repeatCount="2"/></rect>
+<text x="120.0" y="610" fill="#38bdf8" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">P<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="36.75s" fill="freeze"/></text>
+<text x="134.4" y="610" fill="#38bdf8" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">S<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="36.85s" fill="freeze"/></text>
+<text x="148.8" y="610" fill="#38bdf8" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">&gt;<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="36.95s" fill="freeze"/></text>
+<text x="177.6" y="610" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">s<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="37.35s" fill="freeze"/></text>
+<text x="192.0" y="610" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">n<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="37.45s" fill="freeze"/></text>
+<text x="206.4" y="610" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">a<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="37.55s" fill="freeze"/></text>
+<text x="220.8" y="610" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">k<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="37.65s" fill="freeze"/></text>
+<text x="235.2" y="610" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">e<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="37.75s" fill="freeze"/></text>
+<rect x="264.0" y="590" width="12" height="24" fill="#38bdf8" opacity="0"><animate attributeName="opacity" values="1;0;1" dur="0.4s" begin="37.85s" repeatCount="2"/></rect></svg>
+<svg x="0" y="684.0" width="1200" height="420" viewBox="0 0 1200 420"><g opacity="0"><animate id="stats-trigger" attributeName="opacity" from="0" to="1" dur="0.4s" begin="30.60s" fill="freeze"/><defs xmlns="http://www.w3.org/2000/svg">
     <radialGradient id="stats-bgGlow2" cx="50%" cy="0%" r="80%">
       <stop offset="0%" stop-color="#0b1224" />
       <stop offset="100%" stop-color="#020617" />
@@ -355,19 +361,7 @@
   </g>
 
 </g></svg>
-<svg x="0" y="1142.0" width="1200" height="90" viewBox="0 0 1200 90"><svg width="1200" height="90" viewBox="0 0 1200 90">
-  <rect width="1200" height="90" rx="12" fill="#0f172a" stroke="#334155" stroke-width="2"/>
-  <text x="40.0" y="55" fill="#38bdf8" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">P<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="36.75s" fill="freeze"/></text>
-<text x="54.4" y="55" fill="#38bdf8" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">S<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="36.85s" fill="freeze"/></text>
-<text x="68.8" y="55" fill="#38bdf8" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">&gt;<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="36.95s" fill="freeze"/></text>
-  <text x="97.6" y="55" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">s<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="37.35s" fill="freeze"/></text>
-<text x="112.0" y="55" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">n<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="37.45s" fill="freeze"/></text>
-<text x="126.4" y="55" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">a<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="37.55s" fill="freeze"/></text>
-<text x="140.8" y="55" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">k<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="37.65s" fill="freeze"/></text>
-<text x="155.2" y="55" fill="white" font-size="24" font-family="'Courier New', Courier, monospace" opacity="0">e<animate attributeName="opacity" from="0" to="1" dur="0.06s" begin="37.75s" fill="freeze"/></text>
-  <rect x="184.0" y="35" width="12" height="24" fill="#38bdf8" opacity="0"><animate attributeName="opacity" values="1;0;1" dur="0.4s" begin="37.85s" repeatCount="2"/></rect>
-</svg></svg>
-<svg x="0" y="1256.0" width="1200" height="300" viewBox="0 0 1200 300"><g opacity="0"><animate id="snake-trigger" attributeName="opacity" from="0" to="1" dur="0.4s" begin="38.65s" fill="freeze"/><defs xmlns="http://www.w3.org/2000/svg">
+<svg x="0" y="1128.0" width="1200" height="300" viewBox="0 0 1200 300"><g opacity="0"><animate id="snake-trigger" attributeName="opacity" from="0" to="1" dur="0.4s" begin="38.65s" fill="freeze"/><defs xmlns="http://www.w3.org/2000/svg">
     <radialGradient id="snake-bgGlow3" cx="50%" cy="0%" r="80%">
       <stop offset="0%" stop-color="#0b1224" />
       <stop offset="100%" stop-color="#020617" />
