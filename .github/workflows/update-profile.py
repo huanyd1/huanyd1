@@ -2,7 +2,7 @@ name: Update Profile SVG
 
 on:
   schedule:
-    - cron: "0 */6 * * *"   # chạy mỗi 6 tiếng
+    - cron: "0 0 * * *"   # chạy 1 lần/ngày lúc 00:00 UTC (7h sáng giờ VN)
   push:
     branches: [main]
   workflow_dispatch: {}      # cho phép bấm chạy tay trong tab Actions
