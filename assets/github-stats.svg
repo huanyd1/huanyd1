@@ -53,15 +53,15 @@
              begin="0.90s" fill="freeze"/>
     <rect width="225" height="110" rx="14" fill="#0f172a"
           stroke="#334155" stroke-width="2"/>
-    <text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">14<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="1.25s" fill="freeze"/><set attributeName="opacity" to="0" begin="1.37s" fill="freeze"/></text>
+    <text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">15<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="1.25s" fill="freeze"/><set attributeName="opacity" to="0" begin="1.37s" fill="freeze"/></text>
 <text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">29<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="1.37s" fill="freeze"/><set attributeName="opacity" to="0" begin="1.49s" fill="freeze"/></text>
-<text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">43<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="1.49s" fill="freeze"/><set attributeName="opacity" to="0" begin="1.62s" fill="freeze"/></text>
+<text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">44<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="1.49s" fill="freeze"/><set attributeName="opacity" to="0" begin="1.62s" fill="freeze"/></text>
 <text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">58<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="1.62s" fill="freeze"/><set attributeName="opacity" to="0" begin="1.74s" fill="freeze"/></text>
-<text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">72<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="1.74s" fill="freeze"/><set attributeName="opacity" to="0" begin="1.86s" fill="freeze"/></text>
+<text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">73<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="1.74s" fill="freeze"/><set attributeName="opacity" to="0" begin="1.86s" fill="freeze"/></text>
 <text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">87<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="1.86s" fill="freeze"/><set attributeName="opacity" to="0" begin="1.98s" fill="freeze"/></text>
-<text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">101<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="1.98s" fill="freeze"/><set attributeName="opacity" to="0" begin="2.11s" fill="freeze"/></text>
+<text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">102<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="1.98s" fill="freeze"/><set attributeName="opacity" to="0" begin="2.11s" fill="freeze"/></text>
 <text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">116<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="2.11s" fill="freeze"/><set attributeName="opacity" to="0" begin="2.23s" fill="freeze"/></text>
-<text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">130<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="2.23s" fill="freeze"/></text>
+<text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">131<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="2.23s" fill="freeze"/></text>
     <text x="20" y="85" fill="#94a3b8" font-size="15"
           font-family="'Courier New', Courier, monospace">Commits (năm nay)</text>
   </g>
@@ -108,7 +108,7 @@
   <rect x="120" y="350" width="960" height="30" rx="10"
         fill="#1e293b"/>
   <g clip-path="url(#barClip)">
-    <rect x="120.0" y="350" width="366.7" height="30" fill="#178600"/><rect x="486.7" y="350" width="195.8" height="30" fill="#4F5D95"/><rect x="682.6" y="350" width="154.6" height="30" fill="#f1e05a"/><rect x="837.1" y="350" width="130.6" height="30" fill="#e34c26"/><rect x="967.7" y="350" width="36.5" height="30" fill="#878787"/>
+    <rect x="120.0" y="350" width="364.8" height="30" fill="#178600"/><rect x="484.8" y="350" width="194.9" height="30" fill="#4F5D95"/><rect x="679.7" y="350" width="153.6" height="30" fill="#f1e05a"/><rect x="833.3" y="350" width="130.6" height="30" fill="#e34c26"/><rect x="963.8" y="350" width="36.5" height="30" fill="#878787"/>
   </g>
 
   
@@ -117,21 +117,21 @@
              begin="3.70s" fill="freeze"/>
     <circle cx="120" cy="419" r="7" fill="#178600"/>
     <text x="138" y="425" fill="white" font-size="17"
-          font-family="'Courier New', Courier, monospace">C# · 38.2%</text>
+          font-family="'Courier New', Courier, monospace">C# · 38.0%</text>
   </g>
   <g opacity="0">
     <animate attributeName="opacity" from="0" to="1" dur="0.35s"
              begin="3.85s" fill="freeze"/>
     <circle cx="440" cy="419" r="7" fill="#4F5D95"/>
     <text x="458" y="425" fill="white" font-size="17"
-          font-family="'Courier New', Courier, monospace">PHP · 20.4%</text>
+          font-family="'Courier New', Courier, monospace">PHP · 20.3%</text>
   </g>
   <g opacity="0">
     <animate attributeName="opacity" from="0" to="1" dur="0.35s"
              begin="4.00s" fill="freeze"/>
     <circle cx="760" cy="419" r="7" fill="#f1e05a"/>
     <text x="778" y="425" fill="white" font-size="17"
-          font-family="'Courier New', Courier, monospace">JavaScript · 16.1%</text>
+          font-family="'Courier New', Courier, monospace">JavaScript · 16.0%</text>
   </g>
   <g opacity="0">
     <animate attributeName="opacity" from="0" to="1" dur="0.35s"
