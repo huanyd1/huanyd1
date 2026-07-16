@@ -108,7 +108,7 @@
   <rect x="120" y="350" width="960" height="30" rx="10"
         fill="#1e293b"/>
   <g clip-path="url(#barClip)">
-    <rect x="120.0" y="350" width="364.8" height="30" fill="#178600"/><rect x="484.8" y="350" width="194.9" height="30" fill="#4F5D95"/><rect x="679.7" y="350" width="153.6" height="30" fill="#f1e05a"/><rect x="833.3" y="350" width="130.6" height="30" fill="#e34c26"/><rect x="963.8" y="350" width="36.5" height="30" fill="#878787"/>
+    <rect x="120.0" y="350" width="362.9" height="30" fill="#178600"/><rect x="482.9" y="350" width="193.9" height="30" fill="#4F5D95"/><rect x="676.8" y="350" width="152.6" height="30" fill="#f1e05a"/><rect x="829.4" y="350" width="129.6" height="30" fill="#e34c26"/><rect x="959.0" y="350" width="42.2" height="30" fill="#3572A5"/>
   </g>
 
   
@@ -117,35 +117,35 @@
              begin="3.70s" fill="freeze"/>
     <circle cx="120" cy="419" r="7" fill="#178600"/>
     <text x="138" y="425" fill="white" font-size="17"
-          font-family="'Courier New', Courier, monospace">C# · 38.0%</text>
+          font-family="'Courier New', Courier, monospace">C# · 37.8%</text>
   </g>
   <g opacity="0">
     <animate attributeName="opacity" from="0" to="1" dur="0.35s"
              begin="3.85s" fill="freeze"/>
     <circle cx="440" cy="419" r="7" fill="#4F5D95"/>
     <text x="458" y="425" fill="white" font-size="17"
-          font-family="'Courier New', Courier, monospace">PHP · 20.3%</text>
+          font-family="'Courier New', Courier, monospace">PHP · 20.2%</text>
   </g>
   <g opacity="0">
     <animate attributeName="opacity" from="0" to="1" dur="0.35s"
              begin="4.00s" fill="freeze"/>
     <circle cx="760" cy="419" r="7" fill="#f1e05a"/>
     <text x="778" y="425" fill="white" font-size="17"
-          font-family="'Courier New', Courier, monospace">JavaScript · 16.0%</text>
+          font-family="'Courier New', Courier, monospace">JavaScript · 15.9%</text>
   </g>
   <g opacity="0">
     <animate attributeName="opacity" from="0" to="1" dur="0.35s"
              begin="4.15s" fill="freeze"/>
     <circle cx="120" cy="451" r="7" fill="#e34c26"/>
     <text x="138" y="457" fill="white" font-size="17"
-          font-family="'Courier New', Courier, monospace">HTML · 13.6%</text>
+          font-family="'Courier New', Courier, monospace">HTML · 13.5%</text>
   </g>
   <g opacity="0">
     <animate attributeName="opacity" from="0" to="1" dur="0.35s"
              begin="4.30s" fill="freeze"/>
-    <circle cx="440" cy="451" r="7" fill="#878787"/>
+    <circle cx="440" cy="451" r="7" fill="#3572A5"/>
     <text x="458" y="457" fill="white" font-size="17"
-          font-family="'Courier New', Courier, monospace">Hack · 3.8%</text>
+          font-family="'Courier New', Courier, monospace">Python · 4.4%</text>
   </g>
 
 </svg>
