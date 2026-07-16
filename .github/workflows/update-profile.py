@@ -14,7 +14,7 @@ jobs:
       contents: write
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           clean: false   # tránh checkout cố xoá file cũ trong workspace và dính EACCES
                           # nếu file đó từng bị ghi bởi container Docker chạy quyền root
