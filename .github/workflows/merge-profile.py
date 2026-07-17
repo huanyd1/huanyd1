@@ -42,6 +42,51 @@ BG_EXTRA_PADDING = 20
 
 BEGIN_ATTR_RE = re.compile(r'begin="(\d+(?:\.\d+)?)s"')
 
+def generate_terminal(bg_height=1000, box_height=900):
+    """
+    Terminal shell cố định.
+    Không đọc terminal.svg nữa.
+    """
+
+    return f"""
+        <defs>
+            <radialGradient id="bgGlow" cx="50%" cy="0%" r="80%">
+                <stop offset="0%" stop-color="#0b1224"/>
+                <stop offset="100%" stop-color="#020617"/>
+            </radialGradient>
+        </defs>
+
+        <rect width="1200"
+            height="{bg_height}"
+            rx="20"
+            fill="url(#bgGlow)"/>
+
+
+        <rect x="80"
+            y="60"
+            width="1040"
+            height="{box_height}"
+            rx="15"
+            fill="#020617"
+            stroke="#334155"
+            stroke-width="2"/>
+
+
+        <!-- terminal chrome -->
+        <circle cx="120" cy="95" r="8" fill="#ef4444"/>
+        <circle cx="150" cy="95" r="8" fill="#eab308"/>
+        <circle cx="180" cy="95" r="8" fill="#22c55e"/>
+
+
+        <text x="220"
+            y="102"
+            fill="#94a3b8"
+            font-size="18"
+            font-family="{FONT}">
+            huanyd1@github
+        </text>
+        """
+
 
 def collect_ids(xml_str):
     return set(re.findall(r'id="([^"]+)"', xml_str))
@@ -149,12 +194,7 @@ def wrap_with_trigger(xml_str, y_offset, trigger_time, trigger_id, shift_interna
 
 
 def main():
-    # === 1. Terminal gốc: giữ nguyên nội dung boot sequence ===
-    term_raw = open("assets/terminal.svg", encoding="utf-8").read()
-    term_root = ET.fromstring(term_raw)
-    term_inner = "".join(ET.tostring(c, encoding="unicode") for c in term_root)
-    term_inner = namespace_ids(term_inner, "term")
-
+    term_inner = ""
     # === 2. Stats: gộp defs + fragment thành 1 khối TRƯỚC khi đổi id,
     # để tham chiếu url(#barClip) không bị lệch tên với định nghĩa ===
     stats_root = ET.parse("assets/github-stats.svg").getroot()
@@ -201,6 +241,11 @@ def main():
     VIEWBOX_H = BOX_BOTTOM + VIEWBOX_BOTTOM_PADDING
     BG_H = VIEWBOX_H + BG_EXTRA_PADDING
 
+    term_inner = generate_terminal(
+    bg_height=BG_H,
+    box_height=BOX_HEIGHT
+    )
+
     # === 6. Bọc stats/snake với trigger + dịch toạ độ Y ===
     stats_wrapped = wrap_with_trigger(
         stats_combined, Y_STATS_START, t_stats_trigger, "stats-trigger", shift_internal=True)
@@ -208,11 +253,6 @@ def main():
         snake_fragment_xml, Y_SNAKE_START, t_snake_trigger, "snake-trigger", shift_internal=False)
 
     # === 7. Kéo dài đúng box/nền GỐC bên trong terminal (không tạo box mới) ===
-    term_inner = term_inner.replace(
-        'width="1200" height="580" rx="20"', f'width="1200" height="{BG_H:.0f}" rx="20"')
-    term_inner = term_inner.replace(
-        'width="1040" height="480" rx="15"', f'width="1040" height="{BOX_HEIGHT:.0f}" rx="15"')
-
     # === 8. Ghép tất cả vào 1 <svg> duy nhất, 1 hệ toạ độ, 1 khung ===
     merged = f"""<svg width="1200" height="{VIEWBOX_H:.0f}"
      viewBox="0 0 1200 {VIEWBOX_H:.0f}"
