@@ -116,6 +116,19 @@ def command_line(command, y, t_start):
     return f"{prompt_svg}\n{cmd_svg}\n{cursor_svg}", t_trigger
 
 
+def get_viewbox_height(root):
+    """Lấy chiều cao thật từ viewBox hoặc height attribute — dùng cho
+    snake.svg vì đây là output của action bên thứ 3 (Platane/snk),
+    không theo quy ước data-height mình tự đặt cho file tự viết."""
+    vb = root.get("viewBox")
+    if vb:
+        parts = vb.split()
+        if len(parts) == 4:
+            return float(parts[3])
+    h = root.get("height", "0")
+    return float(re.sub(r"[^\d.]", "", h) or 0)
+
+
 def extract_fragment(root, content_id):
     """Tìm <g id="{content_id}" data-height="H"> trong root, trả về
     (fragment_xml, height). Nếu không thấy, báo lỗi kèm danh sách id
@@ -179,9 +192,17 @@ def main():
     stats_duration = max_end_time(stats_combined)
     stats_combined = namespace_ids(stats_combined, "stats")
 
-    # === 3. Snake: chỉ có fragment, không có defs riêng (đã bỏ khi xoá nền) ===
+    # === 3. Snake: output THẬT của Platane/snk (action bên thứ 3) KHÔNG
+    # có <g id="content"> bọc sẵn — đó là quy ước mình tự đặt riêng cho
+    # github-stats.svg (file mình tự viết). Platane/snk trả về content
+    # thuần luôn rồi, nên lấy toàn bộ children trực tiếp, đo chiều cao
+    # qua viewBox/height chuẩn của chính file — không phụ thuộc cấu
+    # trúc bên trong action tạo ra, tránh crash nếu action đổi cách
+    # render nội bộ trong tương lai.
     snake_root = ET.parse("assets/snake.svg").getroot()
-    snake_fragment_xml, snake_height = extract_fragment(snake_root, "content")
+    snake_height = get_viewbox_height(snake_root)
+    snake_fragment_xml = "".join(
+        ET.tostring(c, encoding="unicode") for c in snake_root)
     snake_fragment_xml = namespace_ids(snake_fragment_xml, "snake")
 
     # === 4. Tính toạ độ Y cho từng phần theo đúng chiều cao THẬT ===
