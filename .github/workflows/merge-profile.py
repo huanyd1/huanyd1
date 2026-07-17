@@ -208,6 +208,7 @@ def main():
     stats_duration = max_end_time(stats_combined)
     stats_combined = namespace_ids(stats_combined, "stats")
 
+
     # === 3. Snake: chỉ có fragment, không có defs riêng (đã bỏ khi xoá nền) ===
     snake_root = ET.parse("assets/snake.svg").getroot()
     snake_fragment_xml, snake_height = extract_fragment(snake_root, "content")
