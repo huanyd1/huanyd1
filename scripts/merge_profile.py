@@ -1,16 +1,22 @@
 #!/usr/bin/env python3
 """
 merge_profile.py — gộp terminal.svg + github-stats.svg + snake.svg
-thành 1 file duy nhất assets/profile.svg, với 2 thanh lệnh nối tiếp
-("PS> github-stats", "PS> snake") mô phỏng một phiên terminal liền
-mạch: gõ lệnh xong thì khối tương ứng bên dưới mới "được gọi ra".
+thành 1 file duy nhất assets/profile.svg, với TOÀN BỘ nội dung nằm
+trong CÙNG MỘT khung terminal (1 box, 1 viền, 1 chrome ở đầu) — không
+phải 3 "cửa sổ" xếp chồng. Stats/snake được coi như output được lệnh
+terminal "in ra", giống ls/cat/ps trong terminal thật.
 
-Kỹ thuật: dùng SMIL syncbase timing (begin="id.begin+Xs") cho nội
-dung bên trong github-stats — vì các animate trong đó là one-shot
-(chạy 1 lần rồi đứng yên), nên phải neo theo thời điểm được gọi,
-không thể dùng mốc tuyệt đối cố định lúc build. Snake.svg lặp vô hạn
-(repeatCount="indefinite") nên chỉ cần bọc fade-in khi được gọi, giữ
-nguyên animate bên trong.
+Cách làm: chỉ có terminal.svg giữ nguyên box/chrome gốc (được kéo dài
+cho vừa). github-stats.svg và snake.svg chỉ đóng góp phần NỘI DUNG
+thuần (đọc qua <g id="...-content" data-height="...">, không có
+canvas/box/nền riêng), được nhúng vào giữa khung terminal bằng
+<g transform="translate(0,Y)"> — không tạo <svg> con, không tạo box
+mới, để mọi thứ trôi chung 1 hệ toạ độ, 1 khung duy nhất.
+
+Timing: dùng SMIL syncbase (begin="id.begin+Xs") cho stats vì animate
+trong đó one-shot (chạy 1 lần rồi đứng yên) — phải neo theo lúc được
+gọi. Snake lặp vô hạn nên không cần dịch giờ bên trong, chỉ cần fade
+đúng lúc.
 
 Chạy: python3 merge_profile.py
 """
@@ -24,50 +30,86 @@ ET.register_namespace("", SVG_NS)
 FONT = "'Courier New', Courier, monospace"
 CHAR_W = 24 * 0.6  # 14.4px — advance width Courier New tại font-size 24
 
-# Mốc bắt đầu thanh lệnh 1 ("github-stats"): CỐ ĐỊNH theo yêu cầu — vì
-# terminal.svg do người dùng tự canh, khung cuối của họ là 28s.
-T_CONNECTOR_1_START = 28.0
-SETTLE_BUFFER = 0.8     # thời gian chờ sau khi gõ xong + cursor nháy, trước khi "gọi" khối bên dưới
+T_LINE5_START = 28.0     # mốc bắt đầu gõ "github-stats", cố định theo terminal.svg gốc của user
+SETTLE_BUFFER = 0.8      # thời gian chờ sau khi gõ xong 1 lệnh + cursor nháy, trước khi "gọi" nội dung
 GAP_AFTER_SECTION = 1.5  # thời gian nghỉ sau khi 1 khối chạy xong animate, trước khi gõ lệnh tiếp theo
+
+Y_MARGIN_BEFORE_CONTENT = 45   # khoảng cách từ dòng lệnh xuống nội dung bên dưới
+Y_MARGIN_BEFORE_COMMAND = 45   # khoảng cách từ cuối nội dung xuống dòng lệnh tiếp theo
+BOX_BOTTOM_PADDING = 30
+VIEWBOX_BOTTOM_PADDING = 20
+BG_EXTRA_PADDING = 20
 
 BEGIN_ATTR_RE = re.compile(r'begin="(\d+(?:\.\d+)?)s"')
 
+def generate_terminal(bg_height=1000, box_height=900):
+    """
+    Terminal shell cố định.
+    Không đọc terminal.svg nữa.
+    """
 
-def read_root(path):
-    return ET.parse(path).getroot()
+    return f"""
+        <defs>
+            <radialGradient id="bgGlow" cx="50%" cy="0%" r="80%">
+                <stop offset="0%" stop-color="#0b1224"/>
+                <stop offset="100%" stop-color="#020617"/>
+            </radialGradient>
+        </defs>
+
+        <rect width="1200"
+            height="{bg_height}"
+            rx="20"
+            fill="url(#bgGlow)"/>
 
 
-def get_dimensions(root):
-    vb = root.get("viewBox")
-    if vb:
-        _, _, w, h = [float(v) for v in vb.split()]
-        return w, h
-    w = float(re.sub(r"[^\d.]", "", root.get("width", "0")) or 0)
-    h = float(re.sub(r"[^\d.]", "", root.get("height", "0")) or 0)
-    return w, h
+        <rect x="80"
+            y="60"
+            width="1040"
+            height="{box_height}"
+            rx="15"
+            fill="#020617"
+            stroke="#334155"
+            stroke-width="2"/>
 
 
-def inner_xml(root):
-    return "".join(ET.tostring(child, encoding="unicode") for child in root)
+        <!-- terminal chrome -->
+        <circle cx="120" cy="95" r="8" fill="#ef4444"/>
+        <circle cx="150" cy="95" r="8" fill="#eab308"/>
+        <circle cx="180" cy="95" r="8" fill="#22c55e"/>
 
 
-def namespace_ids(xml_str, prefix):
-    """Đổi id="..." thành "{prefix}-..." và cập nhật mọi url(#id)/href
-    trỏ tới id đó, tránh xung đột giữa 3 phần khi gộp chung 1 file."""
-    ids = set(re.findall(r'id="([^"]+)"', xml_str))
-    for old_id in ids:
-        new_id = f"{prefix}-{old_id}"
+        <text x="220"
+            y="102"
+            fill="#94a3b8"
+            font-size="18"
+            font-family="{FONT}">
+            huanyd1@github
+        </text>
+        """
+
+
+def collect_ids(xml_str):
+    return set(re.findall(r'id="([^"]+)"', xml_str))
+
+
+def apply_id_map(xml_str, id_map):
+    for old_id, new_id in id_map.items():
         xml_str = re.sub(rf'id="{re.escape(old_id)}"', f'id="{new_id}"', xml_str)
         xml_str = xml_str.replace(f"url(#{old_id})", f"url(#{new_id})")
     return xml_str
 
 
+def namespace_ids(xml_str, prefix):
+    """Đổi id="..." thành "{prefix}-..." và cập nhật mọi url(#id) trỏ
+    tới id đó, tránh xung đột giữa các phần khi gộp chung 1 file."""
+    id_map = {old: f"{prefix}-{old}" for old in collect_ids(xml_str)}
+    return apply_id_map(xml_str, id_map)
+
+
 def max_end_time(xml_str):
-    """Tính mốc thời gian animate one-shot cuối cùng hoàn tất (dùng để
-    biết khi nào 1 khối đã "chạy xong" và có thể gọi khối kế tiếp).
-    Chỉ tính animate/set có begin dạng số tuyệt đối (chưa bị đổi
-    thành syncbase), bỏ qua các animate repeatCount="indefinite" vì
-    chúng không có điểm "kết thúc" thật sự."""
+    """Tính mốc thời gian animate one-shot cuối cùng hoàn tất — dùng để
+    biết khi nào 1 khối đã "chạy xong" và có thể gọi khối kế tiếp. Bỏ
+    qua animate repeatCount="indefinite" vì không có điểm kết thúc thật."""
     ends = []
     for m in re.finditer(r'<(animate|set)([^>]*)/>', xml_str):
         tag_attrs = m.group(2)
@@ -83,8 +125,7 @@ def max_end_time(xml_str):
 
 
 def typed_chars(text, x_start, y, begin_start, step=0.1, color="white"):
-    """Sinh <text> gõ từng ký tự, dùng đúng lưới CHAR_W như terminal.svg
-    gốc để giữ spacing nhất quán."""
+    """Sinh <text> gõ từng ký tự theo lưới CHAR_W, khớp spacing terminal gốc."""
     out = []
     for i, ch in enumerate(text):
         x = x_start + i * CHAR_W
@@ -101,179 +142,134 @@ def typed_chars(text, x_start, y, begin_start, step=0.1, color="white"):
     return "\n".join(out), end_time, end_x
 
 
-def extend_terminal_with_commands(term_raw_text, t_line5_start):
-    """Kéo dài box terminal GỐC của user (không tạo box rời), rồi chèn
-    dòng lệnh 'PS> github-stats' vào ngay bên trong — dùng đúng lưới
-    ký tự/màu như các dòng lệnh khác trong file để trông liền mạch
-    như 1 phiên terminal đang cuộn tiếp. Lệnh 'snake' KHÔNG nằm ở đây
-    nữa — nó chuyển sang 1 thanh nối riêng đặt ngay trước phần snake,
-    xem build_snake_connector()."""
-    OLD_VB_H, NEW_VB_H = 560, 610
-    OLD_BOX_H, NEW_BOX_H = 480, 530
-    OLD_BG_H, NEW_BG_H = 580, 630
-    Y_LINE5 = 555
-
-    text = term_raw_text
-    text = text.replace(f'viewBox="0 0 1200 {OLD_VB_H}"',
-                         f'viewBox="0 0 1200 {NEW_VB_H}"')
-    text = text.replace(f'width="1200" height="{OLD_BG_H}" rx="20"',
-                         f'width="1200" height="{NEW_BG_H}" rx="20"')
-    text = text.replace(f'width="1040" height="{OLD_BOX_H}" rx="15"',
-                         f'width="1040" height="{NEW_BOX_H}" rx="15"')
-
-    root = ET.fromstring(text)
-
-    def command_line_xml(command, y, t_start):
-        prompt_svg, t_after_prompt, x_after_prompt = typed_chars(
-            "PS>", 120, y, t_start, color="#38bdf8")
-        cmd_svg, t_after_cmd, x_after_cmd = typed_chars(
-            command, x_after_prompt + CHAR_W, y, t_after_prompt + 0.3, color="white")
-        cursor_x = x_after_cmd + CHAR_W
-        cursor_svg = (
-            f'<rect x="{cursor_x:.1f}" y="{y-20}" width="12" height="24" '
-            f'fill="#38bdf8" opacity="0">'
-            f'<animate attributeName="opacity" values="1;0;1" dur="0.4s" '
-            f'begin="{t_after_cmd:.2f}s" repeatCount="2"/></rect>'
-        )
-        t_trigger = t_after_cmd + SETTLE_BUFFER
-        return f"{prompt_svg}\n{cmd_svg}\n{cursor_svg}", t_trigger
-
-    line5_xml, t_stats_trigger = command_line_xml(
-        "github-stats", Y_LINE5, t_line5_start)
-
-    return root, line5_xml, t_stats_trigger
-
-
-def build_snake_connector(t_start, width=1200, height=90):
-    """Thanh nối nhỏ đặt ngay sau github-stats, ngay trước snake — chỉ
-    chứa dòng lệnh 'PS> snake'. Dùng đúng màu nền/viền (#0f172a /
-    #334155) như box terminal và box github-stats để không bị lạc
-    tông, dù không cần đủ bộ chrome (3 chấm + label) vì đây chỉ là 1
-    thanh mảnh, không phải 1 'cửa sổ' riêng."""
+def command_line(command, y, t_start):
+    """1 dòng 'PS> {command}' tại vị trí y trong hệ toạ độ CHUNG của
+    terminal. Trả về (xml, t_trigger) — t_trigger là mốc nên "gọi"
+    nội dung phía sau."""
     prompt_svg, t_after_prompt, x_after_prompt = typed_chars(
-        "PS>", 40, height / 2 + 8, t_start, color="#38bdf8")
+        "PS>", 120, y, t_start, color="#38bdf8")
     cmd_svg, t_after_cmd, x_after_cmd = typed_chars(
-        "snake", x_after_prompt + CHAR_W, height / 2 + 8, t_after_prompt + 0.3, color="white")
+        command, x_after_prompt + CHAR_W, y, t_after_prompt + 0.3, color="white")
     cursor_x = x_after_cmd + CHAR_W
     cursor_svg = (
-        f'<rect x="{cursor_x:.1f}" y="{height/2-12:.1f}" width="12" height="24" '
+        f'<rect x="{cursor_x:.1f}" y="{y-20}" width="12" height="24" '
         f'fill="#38bdf8" opacity="0">'
         f'<animate attributeName="opacity" values="1;0;1" dur="0.4s" '
         f'begin="{t_after_cmd:.2f}s" repeatCount="2"/></rect>'
     )
-
-    svg = (
-        f'<rect width="{width}" height="{height}" rx="15" fill="#0f172a" '
-        f'stroke="#334155" stroke-width="3"/>'
-        f'{prompt_svg}\n{cmd_svg}\n{cursor_svg}'
-    )
-
     t_trigger = t_after_cmd + SETTLE_BUFFER
-    return svg, height, t_trigger
+    return f"{prompt_svg}\n{cmd_svg}\n{cursor_svg}", t_trigger
 
 
-def wrap_stats_section(xml_str, trigger_time, trigger_id="stats-trigger"):
-    """Bọc nội dung github-stats trong 1 group fade-in tại trigger_time,
-    và chuyển MỌI begin='Xs' tuyệt đối bên trong thành syncbase
-    'trigger_id.begin+Xs' — để toàn bộ chuỗi animate one-shot bên
-    trong chỉ bắt đầu đếm giờ kể từ lúc khối được gọi, không phải từ
-    lúc mở file."""
-    def shift(m):
-        return f'begin="{trigger_id}.begin+{m.group(1)}s"'
+def extract_fragment(root, content_id):
+    """Tìm <g id="{content_id}" data-height="H"> trong root, trả về
+    (fragment_xml, height)."""
+    for g in root.iter():
+        if g.get("id") == content_id:
+            height = float(g.get("data-height", "0"))
+            return ET.tostring(g, encoding="unicode"), height
+    raise ValueError(f'Không tìm thấy <g id="{content_id}"> trong file')
 
-    shifted = BEGIN_ATTR_RE.sub(shift, xml_str)
+
+def wrap_with_trigger(xml_str, y_offset, trigger_time, trigger_id, shift_internal):
+    """Bọc content trong <g transform="translate(0,Y)" opacity="0"> với
+    1 animate trigger tại trigger_time. Nếu shift_internal=True (dùng
+    cho stats — animate one-shot), chuyển mọi begin="Xs" tuyệt đối bên
+    trong thành syncbase 'trigger_id.begin+Xs' để chuỗi animate chỉ
+    bắt đầu đếm giờ từ lúc được gọi. Nếu False (snake — lặp vô hạn),
+    giữ nguyên animate bên trong, chỉ cần fade đúng lúc."""
+    content = xml_str
+    if shift_internal:
+        def shift(m):
+            return f'begin="{trigger_id}.begin+{m.group(1)}s"'
+        content = BEGIN_ATTR_RE.sub(shift, content)
 
     return (
-        f'<g opacity="0">'
+        f'<g transform="translate(0,{y_offset:.1f})" opacity="0">'
         f'<animate id="{trigger_id}" attributeName="opacity" from="0" to="1" '
         f'dur="0.4s" begin="{trigger_time:.2f}s" fill="freeze"/>'
-        f'{shifted}'
-        f'</g>'
-    )
-
-
-def wrap_snake_section(xml_str, trigger_time, trigger_id="snake-trigger"):
-    """Bọc nội dung snake trong 1 group fade-in tại trigger_time. KHÔNG
-    dịch giờ bên trong vì snake lặp vô hạn (repeatCount="indefinite")
-    — chỉ cần hiện ra đúng lúc, animate bên trong tự chạy tiếp bình
-    thường không cần đồng bộ với thời điểm được gọi."""
-    return (
-        f'<g opacity="0">'
-        f'<animate id="{trigger_id}" attributeName="opacity" from="0" to="1" '
-        f'dur="0.4s" begin="{trigger_time:.2f}s" fill="freeze"/>'
-        f'{xml_str}'
+        f'{content}'
         f'</g>'
     )
 
 
 def main():
-    term_raw_text = open("assets/terminal.svg", encoding="utf-8").read()
+    term_inner = ""
+    # === 2. Stats: gộp defs + fragment thành 1 khối TRƯỚC khi đổi id,
+    # để tham chiếu url(#barClip) không bị lệch tên với định nghĩa ===
+    stats_root = ET.parse("assets/github-stats.svg").getroot()
+    stats_defs_el = stats_root.find(f"{{{SVG_NS}}}defs")
+    stats_defs_xml = (
+        "".join(ET.tostring(c, encoding="unicode") for c in stats_defs_el)
+        if stats_defs_el is not None else ""
+    )
+    stats_fragment_xml, stats_height = extract_fragment(stats_root, "content")
+    stats_combined = stats_defs_xml + stats_fragment_xml
+    stats_duration = max_end_time(stats_combined)
+    stats_combined = namespace_ids(stats_combined, "stats")
 
-    # --- Kéo dài box terminal gốc, chèn dòng lệnh "github-stats" ngay bên trong ---
-    term_root, line5_xml, t_stats_trigger = extend_terminal_with_commands(
-        term_raw_text, T_CONNECTOR_1_START)
+    # === 3. Snake: chỉ có fragment, không có defs riêng (đã bỏ khi xoá nền) ===
+    snake_root = ET.parse("assets/snake.svg").getroot()
+    snake_fragment_xml, snake_height = extract_fragment(snake_root, "content")
+    snake_fragment_xml = namespace_ids(snake_fragment_xml, "snake")
 
-    term_w, term_h = get_dimensions(term_root)
-    term_xml = namespace_ids(inner_xml(term_root), "term")
-    combined_term_xml = f"{term_xml}\n{line5_xml}"
+    # === 4. Tính toạ độ Y cho từng phần theo đúng chiều cao THẬT ===
+    Y_LINE5 = 555
+    line5_xml, t_stats_trigger = command_line("github-stats", Y_LINE5, T_LINE5_START)
 
-    # --- Đọc github-stats, tính thời lượng animate one-shot thật của nó ---
-    stats_root = read_root("assets/github-stats.svg")
-    stats_w, stats_h = get_dimensions(stats_root)
-    stats_xml = namespace_ids(inner_xml(stats_root), "stats")
-    stats_duration = max_end_time(stats_xml)
+    Y_STATS_START = Y_LINE5 + Y_MARGIN_BEFORE_CONTENT
+    Y_STATS_END = Y_STATS_START + stats_height
     t_stats_done = t_stats_trigger + stats_duration
-    stats_wrapped = wrap_stats_section(stats_xml, t_stats_trigger)
 
-    # --- Thanh nối "PS> snake", đặt NGAY TRƯỚC phần snake (không còn
-    # nằm trong khung terminal ở trên nữa) ---
-    connector_svg, connector_h, t_snake_trigger = build_snake_connector(
-        t_stats_done + GAP_AFTER_SECTION)
+    Y_LINE6 = Y_STATS_END + Y_MARGIN_BEFORE_COMMAND
+    t_line6_start = t_stats_done + GAP_AFTER_SECTION
+    line6_xml, t_snake_trigger = command_line("snake", Y_LINE6, t_line6_start)
 
-    snake_root = read_root("assets/snake.svg")
-    snake_w, snake_h = get_dimensions(snake_root)
-    snake_xml = namespace_ids(inner_xml(snake_root), "snake")
-    snake_wrapped = wrap_snake_section(snake_xml, t_snake_trigger)
+    Y_SNAKE_START = Y_LINE6 + Y_MARGIN_BEFORE_CONTENT
+    Y_SNAKE_END = Y_SNAKE_START + snake_height
 
-    print(f"[timing] line5_github-stats@{T_CONNECTOR_1_START:.1f}s  "
-          f"stats_trigger@{t_stats_trigger:.2f}s  "
-          f"stats_internal_dur={stats_duration:.2f}s  "
-          f"stats_done@{t_stats_done:.2f}s  "
-          f"connector_snake@{(t_stats_done + GAP_AFTER_SECTION):.2f}s  "
-          f"snake_trigger@{t_snake_trigger:.2f}s")
+    print(f"[timing] line5@{T_LINE5_START:.1f}s  stats_trigger@{t_stats_trigger:.2f}s  "
+          f"stats_dur={stats_duration:.2f}s  stats_done@{t_stats_done:.2f}s  "
+          f"line6@{t_line6_start:.2f}s  snake_trigger@{t_snake_trigger:.2f}s")
+    print(f"[layout] Y_STATS={Y_STATS_START:.0f}-{Y_STATS_END:.0f}  "
+          f"Y_LINE6={Y_LINE6:.0f}  Y_SNAKE={Y_SNAKE_START:.0f}-{Y_SNAKE_END:.0f}")
 
-    GAP = 24
-    blocks = []
-    cursor_y = 0.0
-    max_width = max(term_w, stats_w, snake_w, 1200)
+    # === 5. Kích thước box/canvas cuối cùng, bao trọn mọi nội dung ===
+    BOX_TOP = 60
+    BOX_BOTTOM = Y_SNAKE_END + BOX_BOTTOM_PADDING
+    BOX_HEIGHT = BOX_BOTTOM - BOX_TOP
+    VIEWBOX_H = BOX_BOTTOM + VIEWBOX_BOTTOM_PADDING
+    BG_H = VIEWBOX_H + BG_EXTRA_PADDING
 
-    def add_block(width, height, content_xml):
-        nonlocal cursor_y
-        block = (f'<svg x="0" y="{cursor_y:.1f}" width="{width:.0f}" '
-                  f'height="{height:.0f}" viewBox="0 0 {width:.0f} {height:.0f}">'
-                  f'{content_xml}</svg>')
-        blocks.append(block)
-        cursor_y += height + GAP
+    term_inner = generate_terminal(
+    bg_height=BG_H,
+    box_height=BOX_HEIGHT
+    )
 
-    add_block(term_w, term_h, combined_term_xml)
-    add_block(stats_w, stats_h, stats_wrapped)
-    add_block(1200, connector_h, connector_svg)
-    add_block(snake_w, snake_h, snake_wrapped)
+    # === 6. Bọc stats/snake với trigger + dịch toạ độ Y ===
+    stats_wrapped = wrap_with_trigger(
+        stats_combined, Y_STATS_START, t_stats_trigger, "stats-trigger", shift_internal=True)
+    snake_wrapped = wrap_with_trigger(
+        snake_fragment_xml, Y_SNAKE_START, t_snake_trigger, "snake-trigger", shift_internal=False)
 
-    total_height = cursor_y - GAP
-
-    merged = f"""<svg width="{max_width:.0f}" height="{total_height:.0f}"
-     viewBox="0 0 {max_width:.0f} {total_height:.0f}"
+    # === 7. Kéo dài đúng box/nền GỐC bên trong terminal (không tạo box mới) ===
+    # === 8. Ghép tất cả vào 1 <svg> duy nhất, 1 hệ toạ độ, 1 khung ===
+    merged = f"""<svg width="1200" height="{VIEWBOX_H:.0f}"
+     viewBox="0 0 1200 {VIEWBOX_H:.0f}"
      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 
-{chr(10).join(blocks)}
+{term_inner}
+{line5_xml}
+{stats_wrapped}
+{line6_xml}
+{snake_wrapped}
 
 </svg>
 """
 
     with open("assets/profile.svg", "w", encoding="utf-8") as f:
         f.write(merged)
-    print(f"Đã ghi assets/profile.svg — {len(merged)} ký tự, cao {total_height:.0f}px")
+    print(f"Đã ghi assets/profile.svg — {len(merged)} ký tự, cao {VIEWBOX_H:.0f}px")
 
 
 if __name__ == "__main__":
