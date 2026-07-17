@@ -113,25 +113,27 @@ def compute_stats(user):
     }
 
 
-def render_svg(stats: dict) -> str:
-    # Layout khớp style terminal.svg: canvas ngoài có glow nền, bên trong
-    # là 1 "khung cửa sổ" riêng (box tối, viền, bo góc) + 3 chấm tròn +
-    # label — y hệt toạ độ/màu terminal dùng, để 2 phần trông như cùng
-    # 1 app đang cuộn tiếp chứ không phải 2 widget khác nhau.
-    CANVAS_W, CANVAS_H = 1200, 540
-    BOX_X, BOX_Y, BOX_W, BOX_H = 80, 60, 1040, 440
+def render_fragment(stats: dict):
+    """Trả về (fragment_xml, defs_xml, content_height) — CHỈ nội dung
+    thuần (title, card, bar, legend), KHÔNG có canvas/box/chrome riêng.
+    Thiết kế để nhúng làm 1 <g transform="translate(0,Y)"> bên trong
+    khung terminal duy nhất ở file đã gộp — không phải để đứng 1 mình.
+    Toạ độ X vẫn theo đúng lưới CONTENT_X=120 của terminal để không
+    cần chỉnh lại khi ghép."""
     CONTENT_X = 120
+    CONTENT_RIGHT = 1120  # khớp mép phải box terminal (x=80, width=1040)
     CARD_W, CARD_H, CARD_GAP = 225, 110, 15
     CARD_XS = [CONTENT_X + i * (CARD_W + CARD_GAP) for i in range(4)]
-    TITLE_Y = 150
-    CARDS_Y = 175
+    TITLE_Y = 30
+    CARDS_Y = 55
     LANG_LABEL_Y = CARDS_Y + CARD_H + 45
     BAR_Y = LANG_LABEL_Y + 20
     BAR_H = 30
     BAR_X = CONTENT_X
-    BAR_W = BOX_X + BOX_W - 40 - BAR_X
+    BAR_W = CONTENT_RIGHT - 40 - BAR_X
     LEGEND_Y_START = BAR_Y + BAR_H + 45
     LEGEND_ROW_H = 32
+    CONTENT_HEIGHT = LEGEND_Y_START + LEGEND_ROW_H + 15
 
     font = "'Courier New', Courier, monospace"
 
@@ -214,34 +216,15 @@ def render_svg(stats: dict) -> str:
   </g>"""
         cursor += seg_w
 
-    return f"""<svg width="{CANVAS_W}" height="{CANVAS_H}" viewBox="0 0 {CANVAS_W} {CANVAS_H}"
-     xmlns="http://www.w3.org/2000/svg">
-
-  <defs>
-    <radialGradient id="bgGlow2" cx="50%" cy="0%" r="80%">
-      <stop offset="0%" stop-color="#0b1224"/>
-      <stop offset="100%" stop-color="#020617"/>
-    </radialGradient>
-    <clipPath id="barClip">
+    defs_xml = f"""<clipPath id="barClip">
       <rect x="{BAR_X}" y="{BAR_Y}" width="0" height="{BAR_H}" rx="10">
         <animate attributeName="width" from="0" to="{BAR_W}" dur="{bar_dur}s"
-
                  begin="{bar_begin}s" fill="freeze"/>
       </rect>
-    </clipPath>
-  </defs>
+    </clipPath>"""
 
-  <rect width="{CANVAS_W}" height="{CANVAS_H}" rx="20" fill="url(#bgGlow2)"/>
-
-  <rect x="{BOX_X}" y="{BOX_Y}" width="{BOX_W}" height="{BOX_H}" rx="15"
-        fill="#0f172a" stroke="#334155" stroke-width="3"/>
-
-  <circle cx="120" cy="100" r="10" fill="#ef4444"/>
-  <circle cx="155" cy="100" r="10" fill="#eab308"/>
-  <circle cx="190" cy="100" r="10" fill="#22c55e"/>
-  <text x="240" y="108" fill="#94a3b8" font-size="22" font-family="{font}">huanyd1-stats</text>
-
-  <text x="{CONTENT_X}" y="{TITLE_Y}" fill="white" font-size="24" font-weight="bold"
+    fragment_xml = f"""<g id="content" data-height="{CONTENT_HEIGHT}">
+  <text x="{CONTENT_X}" y="{TITLE_Y}" fill="white" font-size="22" font-weight="bold"
         font-family="{font}" opacity="0">📊 GitHub Stats (auto-updated)
     <animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.1s" fill="freeze"/>
   </text>
@@ -260,7 +243,47 @@ def render_svg(stats: dict) -> str:
   </g>
 
   {legend_items}
+</g>"""
 
+    return fragment_xml, defs_xml, CONTENT_HEIGHT
+
+
+def render_svg(stats: dict) -> str:
+    """Bản standalone (có nền + box) — CHỈ dùng để xem thử/debug độc
+    lập, KHÔNG dùng khi merge vào profile.svg (merge dùng render_fragment
+    trực tiếp)."""
+    fragment_xml, defs_xml, content_height = render_fragment(stats)
+    canvas_h = content_height + 100
+    return f"""<svg width="1200" height="{canvas_h}" viewBox="0 0 1200 {canvas_h}"
+     xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bgGlowPreview" cx="50%" cy="0%" r="80%">
+      <stop offset="0%" stop-color="#0b1224"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </radialGradient>
+    {defs_xml}
+  </defs>
+  <rect width="1200" height="{canvas_h}" rx="20" fill="url(#bgGlowPreview)"/>
+  <g transform="translate(0, 50)">
+    {fragment_xml}
+  </g>
+</svg>
+"""
+
+
+def render_intermediate(stats: dict) -> str:
+    """File TRUNG GIAN thật sự được commit tạm để merge_profile.py đọc
+    — chỉ có defs cần thiết (barClip) + content fragment, KHÔNG có nền
+    riêng, tránh việc merge script lỡ nhặt phải gradient chỉ dùng cho
+    xem thử độc lập (render_svg)."""
+    fragment_xml, defs_xml, content_height = render_fragment(stats)
+    return f"""<svg width="1200" height="{content_height:.0f}"
+     viewBox="0 0 1200 {content_height:.0f}"
+     xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    {defs_xml}
+  </defs>
+  {fragment_xml}
 </svg>
 """
 
@@ -273,7 +296,7 @@ def main():
     os.makedirs(out_dir, exist_ok=True)
     out_path = os.path.join(out_dir, "github-stats.svg")
 
-    svg = render_svg(stats)
+    svg = render_intermediate(stats)
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(svg)
 

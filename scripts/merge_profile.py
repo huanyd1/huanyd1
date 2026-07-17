@@ -42,51 +42,6 @@ BG_EXTRA_PADDING = 20
 
 BEGIN_ATTR_RE = re.compile(r'begin="(\d+(?:\.\d+)?)s"')
 
-def generate_terminal(bg_height=1000, box_height=900):
-    """
-    Terminal shell cố định.
-    Không đọc terminal.svg nữa.
-    """
-
-    return f"""
-        <defs>
-            <radialGradient id="bgGlow" cx="50%" cy="0%" r="80%">
-                <stop offset="0%" stop-color="#0b1224"/>
-                <stop offset="100%" stop-color="#020617"/>
-            </radialGradient>
-        </defs>
-
-        <rect width="1200"
-            height="{bg_height}"
-            rx="20"
-            fill="url(#bgGlow)"/>
-
-
-        <rect x="80"
-            y="60"
-            width="1040"
-            height="{box_height}"
-            rx="15"
-            fill="#020617"
-            stroke="#334155"
-            stroke-width="2"/>
-
-
-        <!-- terminal chrome -->
-        <circle cx="120" cy="95" r="8" fill="#ef4444"/>
-        <circle cx="150" cy="95" r="8" fill="#eab308"/>
-        <circle cx="180" cy="95" r="8" fill="#22c55e"/>
-
-
-        <text x="220"
-            y="102"
-            fill="#94a3b8"
-            font-size="18"
-            font-family="{FONT}">
-            huanyd1@github
-        </text>
-        """
-
 
 def collect_ids(xml_str):
     return set(re.findall(r'id="([^"]+)"', xml_str))
@@ -163,12 +118,23 @@ def command_line(command, y, t_start):
 
 def extract_fragment(root, content_id):
     """Tìm <g id="{content_id}" data-height="H"> trong root, trả về
-    (fragment_xml, height)."""
+    (fragment_xml, height). Nếu không thấy, báo lỗi kèm danh sách id
+    thực sự có trong file — giúp chẩn đoán nhanh nếu 2 file bị lệch
+    phiên bản với nhau (vd generate_stats.py cũ ghi id khác tên)."""
+    found_ids = []
     for g in root.iter():
-        if g.get("id") == content_id:
+        gid = g.get("id")
+        if gid:
+            found_ids.append(gid)
+        if gid == content_id:
             height = float(g.get("data-height", "0"))
             return ET.tostring(g, encoding="unicode"), height
-    raise ValueError(f'Không tìm thấy <g id="{content_id}"> trong file')
+    raise ValueError(
+        f'Không tìm thấy <g id="{content_id}"> trong file. '
+        f'Các id thực sự có trong file: {found_ids or "(không có id nào)"}. '
+        f'Khả năng cao generate_stats.py và merge_profile.py đang lệch phiên bản '
+        f'với nhau — hãy đảm bảo cả 2 file đều là bản mới nhất.'
+    )
 
 
 def wrap_with_trigger(xml_str, y_offset, trigger_time, trigger_id, shift_internal):
@@ -194,7 +160,12 @@ def wrap_with_trigger(xml_str, y_offset, trigger_time, trigger_id, shift_interna
 
 
 def main():
-    term_inner = ""
+    # === 1. Terminal gốc: giữ nguyên nội dung boot sequence ===
+    term_raw = open("assets/terminal.svg", encoding="utf-8").read()
+    term_root = ET.fromstring(term_raw)
+    term_inner = "".join(ET.tostring(c, encoding="unicode") for c in term_root)
+    term_inner = namespace_ids(term_inner, "term")
+
     # === 2. Stats: gộp defs + fragment thành 1 khối TRƯỚC khi đổi id,
     # để tham chiếu url(#barClip) không bị lệch tên với định nghĩa ===
     stats_root = ET.parse("assets/github-stats.svg").getroot()
@@ -203,14 +174,7 @@ def main():
         "".join(ET.tostring(c, encoding="unicode") for c in stats_defs_el)
         if stats_defs_el is not None else ""
     )
-    stats_fragment_xml = "".join(
-        ET.tostring(child, encoding="unicode")
-        for child in stats_root
-        if child.tag != f"{{{SVG_NS}}}defs"
-    )
-    stats_height = float(
-        stats_root.get("height", "540")
-    )
+    stats_fragment_xml, stats_height = extract_fragment(stats_root, "content")
     stats_combined = stats_defs_xml + stats_fragment_xml
     stats_duration = max_end_time(stats_combined)
     stats_combined = namespace_ids(stats_combined, "stats")
@@ -248,11 +212,6 @@ def main():
     VIEWBOX_H = BOX_BOTTOM + VIEWBOX_BOTTOM_PADDING
     BG_H = VIEWBOX_H + BG_EXTRA_PADDING
 
-    term_inner = generate_terminal(
-    bg_height=BG_H,
-    box_height=BOX_HEIGHT
-    )
-
     # === 6. Bọc stats/snake với trigger + dịch toạ độ Y ===
     stats_wrapped = wrap_with_trigger(
         stats_combined, Y_STATS_START, t_stats_trigger, "stats-trigger", shift_internal=True)
@@ -260,6 +219,11 @@ def main():
         snake_fragment_xml, Y_SNAKE_START, t_snake_trigger, "snake-trigger", shift_internal=False)
 
     # === 7. Kéo dài đúng box/nền GỐC bên trong terminal (không tạo box mới) ===
+    term_inner = term_inner.replace(
+        'width="1200" height="580" rx="20"', f'width="1200" height="{BG_H:.0f}" rx="20"')
+    term_inner = term_inner.replace(
+        'width="1040" height="480" rx="15"', f'width="1040" height="{BOX_HEIGHT:.0f}" rx="15"')
+
     # === 8. Ghép tất cả vào 1 <svg> duy nhất, 1 hệ toạ độ, 1 khung ===
     merged = f"""<svg width="1200" height="{VIEWBOX_H:.0f}"
      viewBox="0 0 1200 {VIEWBOX_H:.0f}"
