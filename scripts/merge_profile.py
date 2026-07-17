@@ -203,7 +203,14 @@ def main():
         "".join(ET.tostring(c, encoding="unicode") for c in stats_defs_el)
         if stats_defs_el is not None else ""
     )
-    stats_fragment_xml, stats_height = extract_fragment(stats_root, "content")
+    stats_fragment_xml = "".join(
+        ET.tostring(child, encoding="unicode")
+        for child in stats_root
+        if child.tag != f"{{{SVG_NS}}}defs"
+    )
+    stats_height = float(
+        stats_root.get("height", "540")
+    )
     stats_combined = stats_defs_xml + stats_fragment_xml
     stats_duration = max_end_time(stats_combined)
     stats_combined = namespace_ids(stats_combined, "stats")
