@@ -116,17 +116,20 @@ def command_line(command, y, t_start):
     return f"{prompt_svg}\n{cmd_svg}\n{cursor_svg}", t_trigger
 
 
-def get_viewbox_height(root):
-    """Lấy chiều cao thật từ viewBox hoặc height attribute — dùng cho
-    snake.svg vì đây là output của action bên thứ 3 (Platane/snk),
-    không theo quy ước data-height mình tự đặt cho file tự viết."""
+def get_viewbox_dimensions(root):
+    """Lấy (width, height) thật từ viewBox hoặc width/height attribute
+    — dùng cho snake.svg vì đây là output của action bên thứ 3
+    (Platane/snk), không theo quy ước data-height mình tự đặt cho file
+    tự viết. Grid contribution thật của mỗi người dùng rộng khác nhau
+    (tuỳ số tuần lịch sử), nên không thể giả định cố định."""
     vb = root.get("viewBox")
     if vb:
         parts = vb.split()
         if len(parts) == 4:
-            return float(parts[3])
-    h = root.get("height", "0")
-    return float(re.sub(r"[^\d.]", "", h) or 0)
+            return float(parts[2]), float(parts[3])
+    w = float(re.sub(r"[^\d.]", "", root.get("width", "0")) or 0)
+    h = float(re.sub(r"[^\d.]", "", root.get("height", "0")) or 0)
+    return w, h
 
 
 def extract_fragment(root, content_id):
@@ -150,21 +153,27 @@ def extract_fragment(root, content_id):
     )
 
 
-def wrap_with_trigger(xml_str, y_offset, trigger_time, trigger_id, shift_internal):
-    """Bọc content trong <g transform="translate(0,Y)" opacity="0"> với
-    1 animate trigger tại trigger_time. Nếu shift_internal=True (dùng
+def wrap_with_trigger(xml_str, y_offset, trigger_time, trigger_id, shift_internal, scale=1.0):
+    """Bọc content trong <g transform="translate(0,Y) scale(S)" opacity="0">
+    với 1 animate trigger tại trigger_time. Nếu shift_internal=True (dùng
     cho stats — animate one-shot), chuyển mọi begin="Xs" tuyệt đối bên
     trong thành syncbase 'trigger_id.begin+Xs' để chuỗi animate chỉ
     bắt đầu đếm giờ từ lúc được gọi. Nếu False (snake — lặp vô hạn),
-    giữ nguyên animate bên trong, chỉ cần fade đúng lúc."""
+    giữ nguyên animate bên trong, chỉ cần fade đúng lúc. Tham số scale
+    dùng để co giãn nội dung cho vừa chiều rộng khung chung (vd grid
+    contribution thật của Platane/snk hẹp hơn 1200px)."""
     content = xml_str
     if shift_internal:
         def shift(m):
             return f'begin="{trigger_id}.begin+{m.group(1)}s"'
         content = BEGIN_ATTR_RE.sub(shift, content)
 
+    transform = f"translate(0,{y_offset:.2f})"
+    if scale != 1.0:
+        transform += f" scale({scale:.4f})"
+
     return (
-        f'<g transform="translate(0,{y_offset:.1f})" opacity="0">'
+        f'<g transform="{transform}" opacity="0">'
         f'<animate id="{trigger_id}" attributeName="opacity" from="0" to="1" '
         f'dur="0.4s" begin="{trigger_time:.2f}s" fill="freeze"/>'
         f'{content}'
@@ -195,15 +204,22 @@ def main():
     # === 3. Snake: output THẬT của Platane/snk (action bên thứ 3) KHÔNG
     # có <g id="content"> bọc sẵn — đó là quy ước mình tự đặt riêng cho
     # github-stats.svg (file mình tự viết). Platane/snk trả về content
-    # thuần luôn rồi, nên lấy toàn bộ children trực tiếp, đo chiều cao
-    # qua viewBox/height chuẩn của chính file — không phụ thuộc cấu
-    # trúc bên trong action tạo ra, tránh crash nếu action đổi cách
-    # render nội bộ trong tương lai.
+    # thuần luôn rồi, nên lấy toàn bộ children trực tiếp, đo kích thước
+    # qua viewBox/width/height chuẩn của chính file. Grid contribution
+    # thật rộng khác nhau tuỳ mỗi tài khoản (tuỳ số tuần lịch sử), nên
+    # LUÔN co giãn (scale) cho khớp đúng 1200px chiều rộng khung chung
+    # — không giả định cố định, tránh lệch/hụt như trước.
     snake_root = ET.parse("assets/snake.svg").getroot()
-    snake_height = get_viewbox_height(snake_root)
+    snake_native_w, snake_native_h = get_viewbox_dimensions(snake_root)
+    CANVAS_W = 1200
+    snake_scale = CANVAS_W / snake_native_w if snake_native_w else 1.0
+    snake_height = snake_native_h * snake_scale
     snake_fragment_xml = "".join(
         ET.tostring(c, encoding="unicode") for c in snake_root)
     snake_fragment_xml = namespace_ids(snake_fragment_xml, "snake")
+
+    print(f"[snake] native={snake_native_w:.0f}x{snake_native_h:.0f}  "
+          f"scale={snake_scale:.3f}  scaled_height={snake_height:.0f}")
 
     # === 4. Tính toạ độ Y cho từng phần theo đúng chiều cao THẬT ===
     Y_LINE5 = 555
@@ -237,7 +253,8 @@ def main():
     stats_wrapped = wrap_with_trigger(
         stats_combined, Y_STATS_START, t_stats_trigger, "stats-trigger", shift_internal=True)
     snake_wrapped = wrap_with_trigger(
-        snake_fragment_xml, Y_SNAKE_START, t_snake_trigger, "snake-trigger", shift_internal=False)
+        snake_fragment_xml, Y_SNAKE_START, t_snake_trigger, "snake-trigger",
+        shift_internal=False, scale=snake_scale)
 
     # === 7. Kéo dài đúng box/nền GỐC bên trong terminal (không tạo box mới) ===
     term_inner = term_inner.replace(
