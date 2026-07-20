@@ -116,6 +116,30 @@ def command_line(command, y, t_start):
     return f"{prompt_svg}\n{cmd_svg}\n{cursor_svg}", t_trigger
 
 
+def compute_rect_bbox(xml_str):
+    """Tính bounding box THẬT của các <rect> trong content (ô grid +
+    thân rắn) — dùng để scale chính xác thay vì tin vào viewBox khai
+    báo của file, vì viewBox có thể có padding/margin dư không phản
+    ánh đúng vùng nội dung thật (đã gặp thực tế với Platane/snk: viewBox
+    khai báo rộng hơn hẳn so với nơi các ô grid thật sự kết thúc)."""
+    min_x = min_y = float("inf")
+    max_x = max_y = float("-inf")
+    found = False
+    for rect_match in re.finditer(r"<rect\b([^>]*)/?>", xml_str):
+        attrs = rect_match.group(1)
+        x_m = re.search(r'\bx="(-?[\d.]+)"', attrs)
+        y_m = re.search(r'\by="(-?[\d.]+)"', attrs)
+        w_m = re.search(r'\bwidth="([\d.]+)"', attrs)
+        h_m = re.search(r'\bheight="([\d.]+)"', attrs)
+        if x_m and y_m and w_m and h_m:
+            x, y = float(x_m.group(1)), float(y_m.group(1))
+            w, h = float(w_m.group(1)), float(h_m.group(1))
+            min_x, min_y = min(min_x, x), min(min_y, y)
+            max_x, max_y = max(max_x, x + w), max(max_y, y + h)
+            found = True
+    return (min_x, min_y, max_x, max_y) if found else None
+
+
 def get_viewbox_dimensions(root):
     """Lấy (width, height) thật từ viewBox hoặc width/height attribute
     — dùng cho snake.svg vì đây là output của action bên thứ 3
@@ -153,15 +177,15 @@ def extract_fragment(root, content_id):
     )
 
 
-def wrap_with_trigger(xml_str, y_offset, trigger_time, trigger_id, shift_internal, scale=1.0):
-    """Bọc content trong <g transform="translate(0,Y) scale(S)" opacity="0">
-    với 1 animate trigger tại trigger_time. Nếu shift_internal=True (dùng
-    cho stats — animate one-shot), chuyển mọi begin="Xs" tuyệt đối bên
-    trong thành syncbase 'trigger_id.begin+Xs' để chuỗi animate chỉ
-    bắt đầu đếm giờ từ lúc được gọi. Nếu False (snake — lặp vô hạn),
-    giữ nguyên animate bên trong, chỉ cần fade đúng lúc. Tham số scale
-    dùng để co giãn nội dung cho vừa chiều rộng khung chung (vd grid
-    contribution thật của Platane/snk hẹp hơn 1200px)."""
+def wrap_with_trigger(xml_str, y_offset, trigger_time, trigger_id, shift_internal,
+                       scale=1.0, offset_x=0.0, offset_y=0.0):
+    """Bọc content trong 1 <g> với transform + opacity trigger. Thứ tự
+    transform: translate(0,Y) scale(S) translate(-offset_x,-offset_y)
+    — áp dụng offset trước (đưa bounding box thật về gốc 0,0), rồi
+    scale, rồi mới dịch xuống vị trí Y cuối cùng. Nếu shift_internal=True
+    (stats — animate one-shot), chuyển begin="Xs" tuyệt đối thành
+    syncbase 'trigger_id.begin+Xs'. Nếu False (snake — lặp vô hạn),
+    giữ nguyên animate bên trong, chỉ cần fade đúng lúc."""
     content = xml_str
     if shift_internal:
         def shift(m):
@@ -171,6 +195,8 @@ def wrap_with_trigger(xml_str, y_offset, trigger_time, trigger_id, shift_interna
     transform = f"translate(0,{y_offset:.2f})"
     if scale != 1.0:
         transform += f" scale({scale:.4f})"
+    if offset_x or offset_y:
+        transform += f" translate({-offset_x:.2f},{-offset_y:.2f})"
 
     return (
         f'<g transform="{transform}" opacity="0">'
@@ -204,21 +230,33 @@ def main():
     # === 3. Snake: output THẬT của Platane/snk (action bên thứ 3) KHÔNG
     # có <g id="content"> bọc sẵn — đó là quy ước mình tự đặt riêng cho
     # github-stats.svg (file mình tự viết). Platane/snk trả về content
-    # thuần luôn rồi, nên lấy toàn bộ children trực tiếp, đo kích thước
-    # qua viewBox/width/height chuẩn của chính file. Grid contribution
-    # thật rộng khác nhau tuỳ mỗi tài khoản (tuỳ số tuần lịch sử), nên
-    # LUÔN co giãn (scale) cho khớp đúng 1200px chiều rộng khung chung
-    # — không giả định cố định, tránh lệch/hụt như trước.
+    # thuần luôn rồi, nên lấy toàn bộ children trực tiếp. Đo kích thước
+    # qua BOUNDING BOX THẬT của các <rect> (ô grid + thân rắn) — KHÔNG
+    # dùng viewBox khai báo, vì viewBox có thể có padding dư không
+    # phản ánh đúng nơi nội dung thật sự kết thúc (đã gặp thực tế: grid
+    # chỉ trải tới x≈600 dù viewBox khai báo rộng ~880).
     snake_root = ET.parse("assets/snake.svg").getroot()
-    snake_native_w, snake_native_h = get_viewbox_dimensions(snake_root)
-    CANVAS_W = 1200
-    snake_scale = CANVAS_W / snake_native_w if snake_native_w else 1.0
-    snake_height = snake_native_h * snake_scale
     snake_fragment_xml = "".join(
         ET.tostring(c, encoding="unicode") for c in snake_root)
+
+    bbox = compute_rect_bbox(snake_fragment_xml)
+    if bbox:
+        bx0, by0, bx1, by1 = bbox
+    else:
+        # Khong tim thay rect nao (truong hop hy huu) -> fallback ve viewBox
+        vb_w, vb_h = get_viewbox_dimensions(snake_root)
+        bx0, by0, bx1, by1 = 0.0, 0.0, vb_w, vb_h
+
+    CANVAS_W = 1200
+    content_w = bx1 - bx0
+    content_h = by1 - by0
+    snake_scale = CANVAS_W / content_w if content_w else 1.0
+    snake_height = content_h * snake_scale
+
     snake_fragment_xml = namespace_ids(snake_fragment_xml, "snake")
 
-    print(f"[snake] native={snake_native_w:.0f}x{snake_native_h:.0f}  "
+    print(f"[snake] bbox_that=({bx0:.0f},{by0:.0f})-({bx1:.0f},{by1:.0f})  "
+          f"content={content_w:.0f}x{content_h:.0f}  "
           f"scale={snake_scale:.3f}  scaled_height={snake_height:.0f}")
 
     # === 4. Tính toạ độ Y cho từng phần theo đúng chiều cao THẬT ===
@@ -254,7 +292,7 @@ def main():
         stats_combined, Y_STATS_START, t_stats_trigger, "stats-trigger", shift_internal=True)
     snake_wrapped = wrap_with_trigger(
         snake_fragment_xml, Y_SNAKE_START, t_snake_trigger, "snake-trigger",
-        shift_internal=False, scale=snake_scale)
+        shift_internal=False, scale=snake_scale, offset_x=bx0, offset_y=by0)
 
     # === 7. Kéo dài đúng box/nền GỐC bên trong terminal (không tạo box mới) ===
     term_inner = term_inner.replace(
