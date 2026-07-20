@@ -116,12 +116,36 @@ def command_line(command, y, t_start):
     return f"{prompt_svg}\n{cmd_svg}\n{cursor_svg}", t_trigger
 
 
+def extract_css_class_sizes(xml_str):
+    """Dò trong <style> các rule dạng .tenclass{...width:Npx;height:Mpx...}
+    trả về dict {tenclass: (width, height)}. Platane/snk tối ưu dung
+    lượng file bằng cách định nghĩa kích thước chung qua CSS class thay
+    vì lặp lại width/height trên từng rect (vd hàng trăm ô grid contribution
+    chỉ có x/y, kích thước 12x12 lấy từ CSS .c{...})."""
+    sizes = {}
+    for m in re.finditer(r'\.([\w-]+)\{([^}]*)\}', xml_str):
+        cls, body = m.group(1), m.group(2)
+        w_m = re.search(r'width:\s*([\d.]+)px', body)
+        h_m = re.search(r'height:\s*([\d.]+)px', body)
+        if w_m and h_m:
+            sizes[cls] = (float(w_m.group(1)), float(h_m.group(1)))
+    return sizes
+
+
 def compute_rect_bbox(xml_str):
     """Tính bounding box THẬT của các <rect> trong content (ô grid +
     thân rắn) — dùng để scale chính xác thay vì tin vào viewBox khai
     báo của file, vì viewBox có thể có padding/margin dư không phản
     ánh đúng vùng nội dung thật (đã gặp thực tế với Platane/snk: viewBox
-    khai báo rộng hơn hẳn so với nơi các ô grid thật sự kết thúc)."""
+    khai báo rộng hơn hẳn so với nơi các ô grid thật sự kết thúc).
+
+    Một số rect (vd ô grid contribution) chỉ khai x/y, KHÔNG khai
+    width/height trực tiếp — kích thước lấy từ CSS class dùng chung
+    (.c{width:12px;height:12px}) để giảm dung lượng file. Nếu bỏ qua
+    những rect này, bounding box sẽ thiếu chính xác — nên cần tra CSS
+    làm kích thước mặc định khi rect không khai width/height riêng."""
+    css_sizes = extract_css_class_sizes(xml_str)
+
     min_x = min_y = float("inf")
     max_x = max_y = float("-inf")
     found = False
@@ -131,12 +155,25 @@ def compute_rect_bbox(xml_str):
         y_m = re.search(r'\by="(-?[\d.]+)"', attrs)
         w_m = re.search(r'\bwidth="([\d.]+)"', attrs)
         h_m = re.search(r'\bheight="([\d.]+)"', attrs)
-        if x_m and y_m and w_m and h_m:
-            x, y = float(x_m.group(1)), float(y_m.group(1))
+        if not (x_m and y_m):
+            continue
+        x, y = float(x_m.group(1)), float(y_m.group(1))
+        if w_m and h_m:
             w, h = float(w_m.group(1)), float(h_m.group(1))
-            min_x, min_y = min(min_x, x), min(min_y, y)
-            max_x, max_y = max(max_x, x + w), max(max_y, y + h)
-            found = True
+        else:
+            # Khong co width/height rieng -> tra CSS class dung chung
+            cls_m = re.search(r'class="([^"]*)"', attrs)
+            w = h = None
+            if cls_m:
+                for token in cls_m.group(1).split():
+                    if token in css_sizes:
+                        w, h = css_sizes[token]
+                        break
+            if w is None:
+                continue  # khong tra duoc kich thuoc tu dau ca -> bo qua rect nay
+        min_x, min_y = min(min_x, x), min(min_y, y)
+        max_x, max_y = max(max_x, x + w), max(max_y, y + h)
+        found = True
     return (min_x, min_y, max_x, max_y) if found else None
 
 
