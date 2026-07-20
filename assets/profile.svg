@@ -317,7 +317,7 @@
 
   <rect x="120" y="230" width="960" height="30" rx="10" fill="#1e293b" />
   <g clip-path="url(#stats-barClip)">
-    <rect x="120.0" y="230" width="361.9" height="30" fill="#178600" /><rect x="481.9" y="230" width="193.0" height="30" fill="#4F5D95" /><rect x="674.9" y="230" width="152.6" height="30" fill="#f1e05a" /><rect x="827.5" y="230" width="129.6" height="30" fill="#e34c26" /><rect x="957.1" y="230" width="43.2" height="30" fill="#3572A5" />
+    <rect x="120.0" y="230" width="361.9" height="30" fill="#178600" /><rect x="481.9" y="230" width="193.0" height="30" fill="#4F5D95" /><rect x="674.9" y="230" width="152.6" height="30" fill="#f1e05a" /><rect x="827.5" y="230" width="128.6" height="30" fill="#e34c26" /><rect x="956.2" y="230" width="44.2" height="30" fill="#3572A5" />
   </g>
 
   
@@ -339,12 +339,12 @@
   <g opacity="0">
     <animate attributeName="opacity" from="0" to="1" dur="0.35s" begin="stats-trigger.begin+4.15s" fill="freeze" />
     <circle cx="120" cy="331" r="7" fill="#e34c26" />
-    <text x="138" y="337" fill="white" font-size="17" font-family="'Courier New', Courier, monospace">HTML · 13.5%</text>
+    <text x="138" y="337" fill="white" font-size="17" font-family="'Courier New', Courier, monospace">HTML · 13.4%</text>
   </g>
   <g opacity="0">
     <animate attributeName="opacity" from="0" to="1" dur="0.35s" begin="stats-trigger.begin+4.30s" fill="freeze" />
     <circle cx="440" cy="331" r="7" fill="#3572A5" />
-    <text x="458" y="337" fill="white" font-size="17" font-family="'Courier New', Courier, monospace">Python · 4.5%</text>
+    <text x="458" y="337" fill="white" font-size="17" font-family="'Courier New', Courier, monospace">Python · 4.6%</text>
   </g>
 </g>
 </g>
