@@ -222,7 +222,7 @@
   <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="23s" fill="freeze" />
   <rect x="120" y="475" width="4" height="30" fill="#f472b6" />
   <text x="140" y="498" fill="white" font-size="20" font-family="'Courier New', Courier, monospace">
-    🔧 Building: Payment Widget System (Angular 21 + ASP.NET Core)
+    🔧 Building: VBAN Payment Widget System (Angular 21 + ASP.NET Core)
   </text>
 </g>
 
@@ -273,13 +273,13 @@
     <rect width="225" height="110" rx="14" fill="#0f172a" stroke="#334155" stroke-width="2" />
     <text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">18<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="stats-trigger.begin+1.25s" fill="freeze" /><set attributeName="opacity" to="0" begin="stats-trigger.begin+1.37s" fill="freeze" /></text>
 <text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">36<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="stats-trigger.begin+1.37s" fill="freeze" /><set attributeName="opacity" to="0" begin="stats-trigger.begin+1.49s" fill="freeze" /></text>
-<text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">53<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="stats-trigger.begin+1.49s" fill="freeze" /><set attributeName="opacity" to="0" begin="stats-trigger.begin+1.62s" fill="freeze" /></text>
-<text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">71<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="stats-trigger.begin+1.62s" fill="freeze" /><set attributeName="opacity" to="0" begin="stats-trigger.begin+1.74s" fill="freeze" /></text>
+<text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">54<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="stats-trigger.begin+1.49s" fill="freeze" /><set attributeName="opacity" to="0" begin="stats-trigger.begin+1.62s" fill="freeze" /></text>
+<text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">72<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="stats-trigger.begin+1.62s" fill="freeze" /><set attributeName="opacity" to="0" begin="stats-trigger.begin+1.74s" fill="freeze" /></text>
 <text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">89<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="stats-trigger.begin+1.74s" fill="freeze" /><set attributeName="opacity" to="0" begin="stats-trigger.begin+1.86s" fill="freeze" /></text>
 <text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">107<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="stats-trigger.begin+1.86s" fill="freeze" /><set attributeName="opacity" to="0" begin="stats-trigger.begin+1.98s" fill="freeze" /></text>
-<text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">124<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="stats-trigger.begin+1.98s" fill="freeze" /><set attributeName="opacity" to="0" begin="stats-trigger.begin+2.11s" fill="freeze" /></text>
-<text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">142<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="stats-trigger.begin+2.11s" fill="freeze" /><set attributeName="opacity" to="0" begin="stats-trigger.begin+2.23s" fill="freeze" /></text>
-<text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">160<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="stats-trigger.begin+2.23s" fill="freeze" /></text>
+<text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">125<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="stats-trigger.begin+1.98s" fill="freeze" /><set attributeName="opacity" to="0" begin="stats-trigger.begin+2.11s" fill="freeze" /></text>
+<text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">143<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="stats-trigger.begin+2.11s" fill="freeze" /><set attributeName="opacity" to="0" begin="stats-trigger.begin+2.23s" fill="freeze" /></text>
+<text x="20" y="50" fill="#4ade80" font-size="34" font-weight="bold" font-family="'Courier New', Courier, monospace" opacity="0">161<animate attributeName="opacity" from="0" to="1" dur="0.08s" begin="stats-trigger.begin+2.23s" fill="freeze" /></text>
     <text x="20" y="85" fill="#94a3b8" font-size="15" font-family="'Courier New', Courier, monospace">Commits (năm nay)</text>
   </g>
   <g transform="translate(600, 55)" opacity="0">
