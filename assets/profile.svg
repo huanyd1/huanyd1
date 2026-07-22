@@ -222,7 +222,7 @@
   <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="23s" fill="freeze" />
   <rect x="120" y="475" width="4" height="30" fill="#f472b6" />
   <text x="140" y="498" fill="white" font-size="20" font-family="'Courier New', Courier, monospace">
-    🔧 Building: VBAN Payment Widget System (Angular 21 + ASP.NET Core)
+    🔧 Building: Payment Widget System (Angular 21 + ASP.NET Core)
   </text>
 </g>
 
