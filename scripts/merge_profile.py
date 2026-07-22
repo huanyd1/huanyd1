@@ -215,21 +215,23 @@ def extract_fragment(root, content_id):
 
 
 def wrap_with_trigger(xml_str, y_offset, trigger_time, trigger_id, shift_internal,
-                       scale=1.0, offset_x=0.0, offset_y=0.0):
+                       scale=1.0, offset_x=0.0, offset_y=0.0, x_target=0.0):
     """Bọc content trong 1 <g> với transform + opacity trigger. Thứ tự
-    transform: translate(0,Y) scale(S) translate(-offset_x,-offset_y)
+    transform: translate(x_target,Y) scale(S) translate(-offset_x,-offset_y)
     — áp dụng offset trước (đưa bounding box thật về gốc 0,0), rồi
-    scale, rồi mới dịch xuống vị trí Y cuối cùng. Nếu shift_internal=True
-    (stats — animate one-shot), chuyển begin="Xs" tuyệt đối thành
-    syncbase 'trigger_id.begin+Xs'. Nếu False (snake — lặp vô hạn),
-    giữ nguyên animate bên trong, chỉ cần fade đúng lúc."""
+    scale, rồi mới dịch tới vị trí cuối cùng (x_target, Y). Nếu
+    shift_internal=True (stats — animate one-shot), chuyển begin="Xs"
+    tuyệt đối thành syncbase 'trigger_id.begin+Xs'. Nếu False (snake —
+    lặp vô hạn), giữ nguyên animate bên trong, chỉ cần fade đúng lúc.
+    x_target dùng để canh lề trái khớp với terminal/stats (x=120) thay
+    vì ép content tràn sát mép x=0 của toàn canvas."""
     content = xml_str
     if shift_internal:
         def shift(m):
             return f'begin="{trigger_id}.begin+{m.group(1)}s"'
         content = BEGIN_ATTR_RE.sub(shift, content)
 
-    transform = f"translate(0,{y_offset:.2f})"
+    transform = f"translate({x_target:.2f},{y_offset:.2f})"
     if scale != 1.0:
         transform += f" scale({scale:.4f})"
     if offset_x or offset_y:
@@ -284,10 +286,18 @@ def main():
         vb_w, vb_h = get_viewbox_dimensions(snake_root)
         bx0, by0, bx1, by1 = 0.0, 0.0, vb_w, vb_h
 
-    CANVAS_W = 1200
+    # Co gian theo dung LE NOI DUNG (khong phai full canvas) — khop voi
+    # cach terminal/stats deu canh trai tai x=120, phai tai x=1080 (le
+    # 40px so voi box x=80..1120), KHONG trai flush sat vien ngoai.
+    # Phat hien tu chinh nguoi dung test tay: scale full-canvas (1.4141,
+    # offset 0) khien snake tran sat mep, lech tong voi phan con lai —
+    # scale theo le noi dung (~1.1x tuong duong) + dich vao trong x=120
+    # moi khop dung style chung.
+    CONTENT_X = 120
+    CONTENT_W = 960  # = BOX_X+BOX_W-40-CONTENT_X = 80+1040-40-120
     content_w = bx1 - bx0
     content_h = by1 - by0
-    snake_scale = CANVAS_W / content_w if content_w else 1.0
+    snake_scale = CONTENT_W / content_w if content_w else 1.0
     snake_height = content_h * snake_scale
 
     snake_fragment_xml = namespace_ids(snake_fragment_xml, "snake")
@@ -329,7 +339,8 @@ def main():
         stats_combined, Y_STATS_START, t_stats_trigger, "stats-trigger", shift_internal=True)
     snake_wrapped = wrap_with_trigger(
         snake_fragment_xml, Y_SNAKE_START, t_snake_trigger, "snake-trigger",
-        shift_internal=False, scale=snake_scale, offset_x=bx0, offset_y=by0)
+        shift_internal=False, scale=snake_scale, offset_x=bx0, offset_y=by0,
+        x_target=CONTENT_X)
 
     # === 7. Kéo dài đúng box/nền GỐC bên trong terminal (không tạo box mới) ===
     term_inner = term_inner.replace(
