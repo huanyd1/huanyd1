@@ -37,6 +37,7 @@ jobs:
         uses: Platane/snk@v3
         with:
           github_user_name: huanyd1
+          github_token: ${{ secrets.STATS_PAT }}
           outputs: |
             assets/snake.svg?color_snake=#38bdf8&color_dots=#1e293b,#0e4429,#006d32,#26a641,#39d353
 
