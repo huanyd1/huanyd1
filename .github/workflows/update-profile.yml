@@ -2,7 +2,7 @@ name: Update Profile SVG
 
 on:
   schedule:
-    - cron: "0 0 * * *"   # chạy 1 lần/ngày lúc 00:00 UTC (7h sáng giờ VN)
+    - cron: "0 */6 * * *"   # chạy mỗi 6 tiếng
   push:
     branches: [main]
   workflow_dispatch: {}      # cho phép bấm chạy tay trong tab Actions
@@ -33,7 +33,7 @@ jobs:
           GH_USERNAME: huanyd1
         run: python scripts/generate_stats.py
 
-      - name: Sinh snake.svg (tạm)
+      - name: Sinh snake.svg
         uses: Platane/snk@v3
         with:
           github_user_name: huanyd1
@@ -46,17 +46,17 @@ jobs:
         # bằng quyền root -> cần chown lại trước khi merge/git add/commit
         run: sudo chown -R $(id -u):$(id -g) assets/
 
-      - name: Gộp terminal + stats + snake thành 1 file profile.svg
+      - name: Gộp terminal + stats + snake thành profile.svg
         run: python scripts/merge_profile.py
 
-      - name: Xoá 2 file tạm, chỉ giữ profile.svg
-        run: rm -f assets/github-stats.svg assets/snake.svg
+      - name: Xoá file stats tạm
+        run: rm -f assets/github-stats.svg
 
       - name: Commit nếu có thay đổi
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add assets/profile.svg
-          git add -A assets/  # đảm bảo git ghi nhận cả việc 2 file tạm đã bị xoá
-          git diff --staged --quiet || git commit -m "chore: auto-update profile.svg"
+          git add assets/profile.svg assets/snake.svg
+          git add -A assets/  # đảm bảo git ghi nhận việc file stats tạm đã bị xoá
+          git diff --staged --quiet || git commit -m "chore: auto-update profile assets"
           git push
